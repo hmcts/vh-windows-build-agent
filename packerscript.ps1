@@ -3,23 +3,33 @@
 $rgName = "vh-packer-image"
 $location = "UK South"
 
-New-AzureRmResourceGroup -Name $rgName -Location $location
-
-## SP used for creating the image
-
-$sp = Get-AzureRmADServicePrincipal -SearchString dcd_devopsoctopus | Where-Object DisplayName -EQ dcd_devopsoctopus
-$securePassword = "ElL1YQoT8kbB03N3qVmE"
-$sp.applicationId
-$sp.id
-
-$sub = Get-AzureRmSubscription | Where-Object Name -EQ "Reform-CFT-VH-Dev"
-$sub.TenantId
-$sub.SubscriptionId
 
 
-[Environment]::SetEnvironmentVariable('PATH', ($env:JAVA_HOME + '\\bin;' + $env:PATH)), [EnvironmentVariableTarget]::Machine
+$timestamp = Get-Date -Format yyyyMMddHHMMss 
+ & packer build -machine-readable `
+ -var "time_stamp=$timestamp" `
+ -var-file AAD_Variables.json `
+  windowsagent.json
 
-$path = (([System.Environment]::GetEnvironmentVariable("PSModulePath", "Machine"))
-[System.Environment]::SetEnvironmentVariable("PSModulePath", $path +";C:\Program Files\Fabrikam\Modules", "Machine"))
 
-& packer build windowsagent.json 
+
+  <#
+
+Skus                                           Offer                   PublisherName          Location Id
+----                                           -----                   -------------          -------- --
+Datacenter-Core-1709-smalldisk                 WindowsServerSemiAnnual MicrosoftWindowsServer uksouth  /Subscription...
+Datacenter-Core-1709-with-Containers-smalldisk WindowsServerSemiAnnual MicrosoftWindowsServer uksouth  /Subscription...
+Datacenter-Core-1803-with-Containers-smalldisk WindowsServerSemiAnnual MicrosoftWindowsServer uksouth  /Subscription...
+2008-R2-SP1                           windowsserver MicrosoftWindowsServer uksouth  /Subscriptions/bf308a5c-0624-433...
+2008-R2-SP1-smalldisk                 windowsserver MicrosoftWindowsServer uksouth  /Subscriptions/bf308a5c-0624-433...
+2012-Datacenter                       windowsserver MicrosoftWindowsServer uksouth  /Subscriptions/bf308a5c-0624-433...
+2012-Datacenter-smalldisk             windowsserver MicrosoftWindowsServer uksouth  /Subscriptions/bf308a5c-0624-433...
+2012-R2-Datacenter                    windowsserver MicrosoftWindowsServer uksouth  /Subscriptions/bf308a5c-0624-433...
+2012-R2-Datacenter-smalldisk          windowsserver MicrosoftWindowsServer uksouth  /Subscriptions/bf308a5c-0624-433...
+2016-Datacenter                       windowsserver MicrosoftWindowsServer uksouth  /Subscriptions/bf308a5c-0624-433...
+2016-Datacenter-Server-Core           windowsserver MicrosoftWindowsServer uksouth  /Subscriptions/bf308a5c-0624-433...
+2016-Datacenter-Server-Core-smalldisk windowsserver MicrosoftWindowsServer uksouth  /Subscriptions/bf308a5c-0624-433...
+2016-Datacenter-smalldisk             windowsserver MicrosoftWindowsServer uksouth  /Subscriptions/bf308a5c-0624-433...
+2016-Datacenter-with-Containers       windowsserver MicrosoftWindowsServer uksouth  /Subscriptions/bf308a5c-0624-433...
+2016-Nano-Server                      windowsserver MicrosoftWindowsServer uksouth  /Subscriptions/bf308a5c-0624-433...
+#>
