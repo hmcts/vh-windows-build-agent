@@ -6,6 +6,10 @@
       "type": "string",
       "defaultValue": "vh-automation-dev"
     },
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_B2s"
+    },
     "nodeConfigurationName": {
       "type": "string",
       "defaultValue": "default.local"
@@ -50,7 +54,6 @@
     "publicIPAddressType": "Dynamic",
     "vhdStorageContainerName": "vhds",
     "vmName": "MyWindowsVM",
-    "vmSize": "Standard_A2",
     "virtualNetworkName": "MyVNET",
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetId'), '/subnets/', variables('subnetName'))]",
@@ -189,7 +192,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "[variables('vmSize')]"
+          "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
           "computerName": "[variables('vmName')]",
