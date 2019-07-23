@@ -44,7 +44,6 @@
   "variables": {
     "imagePublisher": "MicrosoftWindowsServer",
     "imageOffer": "WindowsServer",
-    "OSDiskName": "osdiskforwindowssimple",
     "nicName": "myVMNic",
     "addressPrefix": "10.0.0.0/16",
     "subnetName": "Subnet",
@@ -52,14 +51,12 @@
     "vhdStorageType": "Standard_LRS",
     "publicIPAddressName": "myPublicIP",
     "publicIPAddressType": "Dynamic",
-    "vhdStorageContainerName": "vhds",
     "vmName": "MyWindowsVM",
     "virtualNetworkName": "MyVNET",
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetId'), '/subnets/', variables('subnetName'))]",
     "vhdStorageAccountName": "[concat('vhdstorage', uniqueString(resourceGroup().id))]",
-    "diagnosticsStorageAccountName": "[variables('vhdStorageAccountName')]",
-    "wadmetricsresourceid": "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName'))]"
+    "diagnosticsStorageAccountName": "[variables('vhdStorageAccountName')]"
   },
   "resources": [
     {
@@ -211,7 +208,7 @@
           },
           "dataDisks": [
             {
-              "diskSizeGB": 1023,
+              "diskSizeGB": 256,
               "lun": 0,
               "createOption": "Empty"
             }
