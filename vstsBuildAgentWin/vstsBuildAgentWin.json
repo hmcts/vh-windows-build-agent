@@ -29,7 +29,7 @@
     },
     "windowsOSVersion": {
       "type": "string",
-      "defaultValue": "2016-Datacenter-Server-Core-smalldisk",
+      "defaultValue": "2016-Datacenter-Server-Core",
       "allowedValues": [
         "2008-R2-SP1",
         "2012-Datacenter",
