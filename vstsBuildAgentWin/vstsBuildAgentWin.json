@@ -176,7 +176,7 @@
       }
     },
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2018-10-01",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('vmName')]",
       "location": "[resourceGroup().location]",
@@ -208,7 +208,7 @@
           },
           "dataDisks": [
             {
-              "diskSizeGB": 256,
+              "diskSizeGB": 128,
               "lun": 0,
               "createOption": "Empty"
             }
