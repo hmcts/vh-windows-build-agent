@@ -210,7 +210,8 @@
             {
               "diskSizeGB": 128,
               "lun": 0,
-              "createOption": "Empty"
+              "createOption":"Empty",
+            "caching":"ReadWrite"
             }
           ]
         },
