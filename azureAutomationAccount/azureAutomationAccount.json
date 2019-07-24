@@ -13,16 +13,15 @@
     "resources": [
         {
           "type": "Microsoft.Automation/automationAccounts",
-          "apiVersion": "2015-10-31",
+          "apiVersion": "2018-01-15",
           "name":"[parameters('automationAccountName')]",
           "location": "[resourceGroup().location]",
           "tags": {},
           "properties": {
             "sku": {
-              "name": "Free"
+              "name": "Basic"
             }
           }
         }
-
     ]
   }
