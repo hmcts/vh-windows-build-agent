@@ -2,9 +2,18 @@
 function Add-DcsConfiguration {
     [CmdletBinding()]
     param (
+        [String]
+        [Parameter(Mandatory)]
         $ResourceGroupName,
+
+        [String]
+        [Parameter(Mandatory)]
         $AutomationAccountName,
-        $SourcePath = "C:\source\vh-windows-build-agent\FileResourceDemo.ps1"
+
+        [String]
+        [Parameter(Mandatory)]
+        [ValidateScript( {Test-Path $_})]
+        $SourcePath
     )
 
     begin {
@@ -27,5 +36,4 @@ function Add-DcsConfiguration {
     }
 }
 
-
-Add-DcsConfiguration -ResourceGroupName vh-automation-dev -AutomationAccountName vh-automation-dev -SourcePath 'C:\source\vh-windows-build-agent\FileResourceDemo.ps1' -Verbose
+#Add-DcsConfiguration -ResourceGroupName vh-automation-dev -AutomationAccountName vh-automation-dev -SourcePath 'C:\source\vh-windows-build-agent\FileResourceDemo.ps1' -Verbose
