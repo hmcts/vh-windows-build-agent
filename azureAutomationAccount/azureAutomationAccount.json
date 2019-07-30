@@ -29,7 +29,9 @@
         "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
       ],
       "properties": {
-        "contentLink": {}
+        "contentLink": {
+          "uri": "string"
+        }
     }
     }
   ]
