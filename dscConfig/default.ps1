@@ -8,7 +8,7 @@ Configuration default {
 
         xVSTSAgent VSTSAgent {
             Name              = 'Agent01'
-            ServerUrl         = 'https://hmctsreform.visualstudio.com/VirtualHearings'
+            ServerUrl         = 'https://hmctsreform.visualstudio.com'
             Pool               = 'vh-pool-dev'
             AccountCredential = $patCredential
             AgentDirectory    = 'C:\VSTSAgents'
