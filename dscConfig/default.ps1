@@ -4,7 +4,7 @@ Configuration default {
 
     Import-DscResource -ModuleName VSTSAgent
 
-    Node 'localhost' {
+    Node 'local' {
 
         xVSTSAgent VSTSAgent {
             Name              = 'Agent01'
