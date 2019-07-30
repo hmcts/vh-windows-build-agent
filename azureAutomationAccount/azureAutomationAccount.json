@@ -27,7 +27,10 @@
       "name": "[concat(parameters('automationAccountName'), '/VSTSAgent')]",
       "dependsOn": [
         "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
-      ]
+      ],
+      "properties": {
+        "contentLink": {}
+    }
     }
   ]
 }
