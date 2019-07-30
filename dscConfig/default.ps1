@@ -1,6 +1,6 @@
 Configuration default {
 
-    $patCredential = Get-AzureAutomationCredential -Name 'patToken'
+    $patCredential = Get-AutomationPSCredential -Name 'patToken'
 
     Import-DscResource -ModuleName VSTSAgent
 
