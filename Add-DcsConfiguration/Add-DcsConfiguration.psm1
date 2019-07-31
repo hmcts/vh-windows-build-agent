@@ -38,7 +38,8 @@ function Add-DcsConfiguration {
         $CompilationJob | Get-AzAutomationDscCompilationJobOutput -Stream Any
     }
     end {
+        Write-Output 
     }
 }
 
-#Add-DcsConfiguration -ResourceGroupName vh-automation-dev -AutomationAccountName vh-automation-dev -SourcePath '.\dscConfig\default.ps1' -Verbose
+Add-DcsConfiguration -ResourceGroupName vh-automation-dev -AutomationAccountName vh-automation-dev -SourcePath '.\dscConfig\default.ps1' -Verbose

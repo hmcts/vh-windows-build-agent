@@ -14,7 +14,9 @@ Configuration default {
 
 
         For ($i = 0; $i -le $buildAgentCount; $i++) {
-            xVSTSAgent VSTSAgent {
+
+            $VSTSAgent = VSTSAgent + $i
+            xVSTSAgent $VSTSAgent {
                 Name              = 'Agent' + $i
                 ServerUrl         = 'https://hmctsreform.visualstudio.com'
                 Pool              = 'vh-pool-dev'
