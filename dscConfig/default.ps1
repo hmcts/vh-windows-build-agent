@@ -1,9 +1,11 @@
 Configuration default {
 
+    param(
     # Parameter help description
     [Parameter(AttributeValues)]
     [int]
     $buildAgentCount = "5"
+    )
 
     $patCredential = Get-AutomationPSCredential -Name 'patToken'
 
