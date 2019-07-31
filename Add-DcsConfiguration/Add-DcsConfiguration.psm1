@@ -30,10 +30,15 @@ function Add-DcsConfiguration {
             Start-Sleep -Seconds 3
         }
 
+        if($CompilationJob.Exception){
+            Write-Output ("##vso[task.logissue type=error]{0}" -f $CompilationJob.Exception)
+
+        }
+
         $CompilationJob | Get-AzAutomationDscCompilationJobOutput -Stream Any
     }
     end {
     }
 }
 
-#Add-DcsConfiguration -ResourceGroupName vh-automation-dev -AutomationAccountName vh-automation-dev -SourcePath 'C:\source\vh-windows-build-agent\FileResourceDemo.ps1' -Verbose
+Add-DcsConfiguration -ResourceGroupName vh-automation-dev -AutomationAccountName vh-automation-dev -SourcePath '.\dscConfig\default.ps1' -Verbose
