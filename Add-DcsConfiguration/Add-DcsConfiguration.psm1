@@ -41,4 +41,4 @@ function Add-DcsConfiguration {
     }
 }
 
-Add-DcsConfiguration -ResourceGroupName vh-automation-dev -AutomationAccountName vh-automation-dev -SourcePath '.\dscConfig\default.ps1' -Verbose
+#Add-DcsConfiguration -ResourceGroupName vh-automation-dev -AutomationAccountName vh-automation-dev -SourcePath '.\dscConfig\default.ps1' -Verbose
