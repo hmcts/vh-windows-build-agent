@@ -15,7 +15,8 @@ Configuration default {
 
         For ($i = 0; $i -le $buildAgentCount; $i++) {
 
-            $VSTSAgent = VSTSAgent + $i
+            $VSTSAgent = "VSTSAgent" + $i
+
             xVSTSAgent $VSTSAgent {
                 Name              = 'Agent' + $i
                 ServerUrl         = 'https://hmctsreform.visualstudio.com'
