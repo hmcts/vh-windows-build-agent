@@ -1,8 +1,6 @@
 Configuration default {
 
     param(
-    # Parameter help description
-    [Parameter(AttributeValues)]
     [int]
     $buildAgentCount = "5"
     )
