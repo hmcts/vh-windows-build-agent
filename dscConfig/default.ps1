@@ -1,19 +1,29 @@
 Configuration default {
 
+    # Parameter help description
+    [Parameter(AttributeValues)]
+    [int]
+    $buildAgentCount = "5"
+
     $patCredential = Get-AutomationPSCredential -Name 'patToken'
 
     Import-DscResource -ModuleName VSTSAgent
 
     Node 'local' {
 
-        xVSTSAgent VSTSAgent {
-            Name              = 'Agent01'
-            ServerUrl         = 'https://hmctsreform.visualstudio.com'
-            Pool               = 'vh-pool-dev'
-            AccountCredential = $patCredential
-            AgentDirectory    = 'C:\VSTSAgents'
-            Work              = 'D:\VSTSAgentsWork\Agent01'
-            Ensure            = 'Present'
+
+
+        For ($i = 0; $i -le $buildAgentCount; $i++) {
+            xVSTSAgent VSTSAgent {
+                Name              = 'Agent' + $i
+                ServerUrl         = 'https://hmctsreform.visualstudio.com'
+                Pool              = 'vh-pool-dev'
+                AccountCredential = $patCredential
+                AgentDirectory    = 'C:\VSTSAgent'+ $i
+                Ensure            = 'Present'
+            }
         }
+
+
     }
 }
