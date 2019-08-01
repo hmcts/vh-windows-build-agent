@@ -49,11 +49,11 @@
     },
     "configurationModeFrequencyMins": {
       "type": "int",
-      "defaultValue": 5
+      "defaultValue": 15
     },
     "refreshFrequencyMins": {
       "type": "int",
-      "defaultValue": 5
+      "defaultValue": 30
     }
   },
   "variables": {
