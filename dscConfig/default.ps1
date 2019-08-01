@@ -2,7 +2,7 @@ Configuration default {
 
     param(
     [int]
-    $buildAgentCount = "5"
+    $buildAgentCount = "4"
     )
 
     $patCredential = Get-AutomationPSCredential -Name 'patToken'
@@ -11,9 +11,7 @@ Configuration default {
 
     Node 'local' {
 
-
-
-        For ($i = 0; $i -le $buildAgentCount; $i++) {
+        For ($i = 1; $i -le $buildAgentCount; $i++) {
 
             $VSTSAgent = "VSTSAgent" + $i
 
