@@ -81,13 +81,27 @@
       "properties": {
         "securityRules": [
           {
-            "name": "RDPaccess",
+            "name": "RDPaccessJanisHome",
             "properties": {
               "description": "RDP access",
               "protocol": "*",
               "sourcePortRange": "*",
               "destinationPortRange": "3389",
               "sourceAddressPrefix": "195.13.217.248/32",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1000,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "RDPaccessJanisHome2",
+            "properties": {
+              "description": "RDP access",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "sourceAddressPrefix": "195.122.17.211/32",
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 1000,
