@@ -70,8 +70,7 @@
     "virtualNetworkName": "MyVNET",
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetId'), '/subnets/', variables('subnetName'))]",
-    "vhdStorageAccountName": "[concat('vhdstorage', uniqueString(resourceGroup().id))]",
-    "diagnosticsStorageAccountName": "[variables('vhdStorageAccountName')]"
+    "vhdStorageAccountName": "[concat('vhdstorage', uniqueString(resourceGroup().id))]"
   },
   "resources": [
     {
@@ -174,6 +173,9 @@
         "[resourceId('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
       ],
       "properties": {
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('vmName'))]"
+        },
         "ipConfigurations": [
           {
             "name": "ipconfig1",
@@ -225,8 +227,8 @@
             {
               "diskSizeGB": 128,
               "lun": 0,
-              "createOption":"Empty",
-            "caching":"ReadWrite"
+              "createOption": "Empty",
+              "caching": "ReadWrite"
             }
           ]
         },
