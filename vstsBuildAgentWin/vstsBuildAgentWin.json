@@ -104,7 +104,7 @@
               "sourceAddressPrefix": "195.122.17.211/32",
               "destinationAddressPrefix": "*",
               "access": "Allow",
-              "priority": 1000,
+              "priority": 2000,
               "direction": "Inbound"
             }
           },
@@ -118,7 +118,7 @@
               "sourceAddressPrefix": "159.148.16.222/32",
               "destinationAddressPrefix": "*",
               "access": "Allow",
-              "priority": 2000,
+              "priority": 3000,
               "direction": "Inbound"
             }
           }
