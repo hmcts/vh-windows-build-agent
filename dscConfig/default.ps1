@@ -1,8 +1,9 @@
 Configuration default {
 
     param(
-    [int]
-    $buildAgentCount = "4"
+        [int]
+        $buildAgentCount = "4",
+        $vsInstaller = "https://aka.ms/vs/15/release/vs_buildtools.exe"
     )
 
     $patCredential = Get-AutomationPSCredential -Name 'patToken'
@@ -22,6 +23,36 @@ Configuration default {
                 AccountCredential = $patCredential
                 AgentDirectory    = 'C:\VSTSAgent'+ $i
                 Ensure            = 'Present'
+            }
+        }
+
+        File DirectoryCopy
+        {
+            Ensure = "Present" # Ensure the directory is Present on the target node.
+            Type = "Directory" # The default is File.
+            DestinationPath = "C:\temp"
+        }
+
+        Script DownloadMsi {
+            GetScript  =
+            {
+                @{
+                    GetScript  = $GetScript
+                    SetScript  = $SetScript
+                    TestScript = $TestScript
+                    Result     = ('True' -in (Test-Path "C:\temp\vs_buildtools.exe"))
+                }
+            }
+
+            SetScript  =
+            {
+                Invoke-WebRequest -Uri $vsInstaller -OutFile "C:\temp\vs_buildtools.exe"
+            }
+
+            TestScript =
+            {
+                $Status = ('True' -in (Test-Path c:\Somepath\install.msi))
+                $Status -eq $True
             }
         }
 
