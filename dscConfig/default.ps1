@@ -27,10 +27,9 @@ Configuration default {
             }
         }
 
-        File DirectoryCopy
-        {
-            Ensure = "Present" # Ensure the directory is Present on the target node.
-            Type = "Directory" # The default is File.
+        File DirectoryCopy {
+            Ensure          = "Present" # Ensure the directory is Present on the target node.
+            Type            = "Directory" # The default is File.
             DestinationPath = "C:\temp"
         }
 
@@ -57,12 +56,10 @@ Configuration default {
             }
         }
 
-        VisualStudioDSC VisualStudioDSC
-        {
+        VisualStudioDSC VisualStudio2017 {
             ExecutablePath = "C:\temp\vs_buildtools.exe"
-            Workloads = "Microsoft.VisualStudio.Workload.MSBuildTools, Microsoft.Net.Core.Component.SDK, Microsoft.Net.ComponentGroup.4.6.2.DeveloperTools, Microsoft.VisualStudio.Workload.WebBuildTools, Microsoft.VisualStudio.Workload.NodeBuildTools, Microsoft.Net.Component.3.5.DeveloperTools, Microsoft.VisualStudio.Component.TestTools.BuildTools, Microsoft.VisualStudio.Component.TypeScript.2.8, Microsoft.VisualStudio.Component.TestTools.BuildTools, Microsoft.VisualStudio.Workload.MSBuildTools"
-            Ensure            = 'Present'
-
+            Workloads      = "Microsoft.VisualStudio.Workload.MSBuildTools, Microsoft.Net.Core.Component.SDK, Microsoft.Net.ComponentGroup.4.6.2.DeveloperTools, Microsoft.VisualStudio.Workload.WebBuildTools, Microsoft.VisualStudio.Workload.NodeBuildTools, Microsoft.Net.Component.3.5.DeveloperTools, Microsoft.VisualStudio.Component.TestTools.BuildTools, Microsoft.VisualStudio.Component.TypeScript.2.8, Microsoft.VisualStudio.Component.TestTools.BuildTools, Microsoft.VisualStudio.Workload.MSBuildTools"
+            Ensure         = 'Present'
         }
 
     }
