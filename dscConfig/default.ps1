@@ -51,7 +51,7 @@ Configuration default {
 
             TestScript =
             {
-                $Status = ('True' -in (Test-Path c:\Somepath\install.msi))
+                $Status = ('True' -in (Test-Path "C:\temp\vs_buildtools.exe"))
                 $Status -eq $True
             }
         }
