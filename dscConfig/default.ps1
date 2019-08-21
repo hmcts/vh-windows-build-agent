@@ -9,6 +9,7 @@ Configuration default {
     $patCredential = Get-AutomationPSCredential -Name 'patToken'
 
     Import-DscResource -ModuleName VSTSAgent
+    Import-DscResource -ModuleName VisualStudioDSC
 
     Node 'local' {
 
@@ -56,6 +57,13 @@ Configuration default {
             }
         }
 
+        VisualStudioDSC VisualStudioDSC
+        {
+            ExecutablePath = "C:\temp\vs_buildtools.exe"
+            Workloads = "Microsoft.VisualStudio.Workload.MSBuildTools, Microsoft.Net.Core.Component.SDK, Microsoft.Net.ComponentGroup.4.6.2.DeveloperTools, Microsoft.VisualStudio.Workload.WebBuildTools, Microsoft.VisualStudio.Workload.NodeBuildTools, Microsoft.Net.Component.3.5.DeveloperTools, Microsoft.VisualStudio.Component.TestTools.BuildTools, Microsoft.VisualStudio.Component.TypeScript.2.8, Microsoft.VisualStudio.Component.TestTools.BuildTools, Microsoft.VisualStudio.Workload.MSBuildTools"
+            Ensure            = 'Present'
+
+        }
 
     }
 }
