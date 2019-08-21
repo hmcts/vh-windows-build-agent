@@ -46,7 +46,7 @@ Configuration default {
 
             SetScript  =
             {
-                Invoke-WebRequest -Uri $vsInstaller -OutFile "C:\temp\vs_buildtools.exe"
+                Invoke-WebRequest -Uri "https://aka.ms/vs/15/release/vs_buildtools.exe" -OutFile "C:\temp\vs_buildtools.exe"
             }
 
             TestScript =
