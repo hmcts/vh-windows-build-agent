@@ -33,7 +33,7 @@ Configuration default {
             DestinationPath = "C:\temp"
         }
 
-        Script DownloadMsi {
+        Script DownloadExe {
             GetScript  =
             {
                 @{
