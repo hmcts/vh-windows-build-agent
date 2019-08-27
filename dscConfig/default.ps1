@@ -2,14 +2,7 @@ Configuration default {
 
     param(
         [int]
-        $buildAgentCount = "4",
-        $vsInstaller = "https://aka.ms/vs/16/release/vs_buildtools.exe",
-        $VSBuildToolWorkloads = @(
-            "Microsoft.VisualStudio.Workload.MSBuildTools"
-            "Microsoft.VisualStudio.Workload.NetCoreBuildTools"
-            "Microsoft.VisualStudio.Workload.NodeBuildTools"
-            "Microsoft.VisualStudio.Workload.WebBuildTools"
-        )
+        $buildAgentCount = "4"
     )
 
     $patCredential = Get-AutomationPSCredential -Name 'patToken'
@@ -39,28 +32,28 @@ Configuration default {
             DestinationPath = "C:\temp"
         }
 
-        Script DownloadExe {
-            GetScript  =
-            {
-                @{
-                    GetScript  = $GetScript
-                    SetScript  = $SetScript
-                    TestScript = $TestScript
-                    Result     = ('True' -in (Test-Path "C:\temp\vs_buildtools.exe"))
-                }
-            }
+        # Script DownloadExe {
+        #     GetScript  =
+        #     {
+        #         @{
+        #             GetScript  = $GetScript
+        #             SetScript  = $SetScript
+        #             TestScript = $TestScript
+        #             Result     = ('True' -in (Test-Path "C:\temp\vs_buildtools.exe"))
+        #         }
+        #     }
 
-            SetScript  =
-            {
-                Invoke-WebRequest -Uri "https://aka.ms/vs/15/release/vs_buildtools.exe" -OutFile "C:\temp\vs_buildtools.exe"
-            }
+        #     SetScript  =
+        #     {
+        #         Invoke-WebRequest -Uri "https://aka.ms/vs/15/release/vs_buildtools.exe" -OutFile "C:\temp\vs_buildtools.exe"
+        #     }
 
-            TestScript =
-            {
-                $Status = ('True' -in (Test-Path "C:\temp\vs_buildtools.exe"))
-                $Status -eq $True
-            }
-        }
+        #     TestScript =
+        #     {
+        #         $Status = ('True' -in (Test-Path "C:\temp\vs_buildtools.exe"))
+        #         $Status -eq $True
+        #     }
+        # }
 
         Script javaSDK {
             GetScript  =
@@ -203,6 +196,14 @@ Configuration default {
             
             # Returns nothing            
             SetScript  = {
+                $vsInstaller = "https://aka.ms/vs/16/release/vs_buildtools.exe"
+                $VSBuildToolWorkloads = @(
+                    "Microsoft.VisualStudio.Workload.MSBuildTools"
+                    "Microsoft.VisualStudio.Workload.NetCoreBuildTools"
+                    "Microsoft.VisualStudio.Workload.NodeBuildTools"
+                    "Microsoft.VisualStudio.Workload.WebBuildTools"
+                )
+
                 $ExecutablePath = "C:\temp\vs_buildtools_16.exe"
                 Invoke-WebRequest -Uri $vsInstaller -OutFile $ExecutablePath
                 $installer = Get-Item -Path $ExecutablePath
