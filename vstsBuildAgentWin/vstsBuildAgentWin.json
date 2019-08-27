@@ -109,6 +109,20 @@
             }
           },
           {
+            "name": "RDPaccessJanisHome3",
+            "properties": {
+              "description": "RDP access",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "sourceAddressPrefix": "88.135.143.156/32",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 5000,
+              "direction": "Inbound"
+            }
+          },
+          {
             "name": "RDP102PF",
             "properties": {
               "description": "RDP 102PF",
