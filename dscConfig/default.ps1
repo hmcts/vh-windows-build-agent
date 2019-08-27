@@ -146,92 +146,84 @@ Configuration default {
         #         $Status -eq $True
         #     }
         # }
+ 
+        Script VSBuildTools2019 {
+            # Must return a hashtable with at least one key            
+            # named 'Result' of type String            
+            GetScript  = {
 
-        Configuration VSBuildTools2019            
-        {          
-            Import-DscResource -ModuleName PSDesiredStateConfiguration            
-            Node localhost
-            {     
-                Script VSBuildTools2019 {
-                    # Must return a hashtable with at least one key            
-                    # named 'Result' of type String            
-                    GetScript  = {
+                Write-Verbose -Message "Detecting a previous installation of Visual Studio Build Tools 2019"
 
-                        Write-Verbose -Message "Detecting a previous installation of Visual Studio Build Tools 2019"
-
-                        $x86Path = "HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*"
-                        $installedItemsX86 = Get-ItemProperty -Path $x86Path | Select-Object -Property DisplayName
+                $x86Path = "HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*"
+                $installedItemsX86 = Get-ItemProperty -Path $x86Path | Select-Object -Property DisplayName
     
-                        $x64Path = "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*"
-                        $installedItemsX64 = Get-ItemProperty -Path $x64Path | Select-Object -Property DisplayName
+                $x64Path = "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*"
+                $installedItemsX64 = Get-ItemProperty -Path $x64Path | Select-Object -Property DisplayName
 
-                        $installedItems = $installedItemsX86 + $installedItemsX64 
-                        $installedItems = $installedItems | Select-Object -Property DisplayName -Unique    
-                        $vsInstall = $installedItems | Where-Object -FilterScript { 
-                            $_ -match "Visual Studio Build Tools 2019" 
-                        }
+                $installedItems = $installedItemsX86 + $installedItemsX64 
+                $installedItems = $installedItems | Select-Object -Property DisplayName -Unique    
+                $vsInstall = $installedItems | Where-Object -FilterScript { 
+                    $_ -match "Visual Studio Build Tools 2019" 
+                }
             
             
                    
-                        Return @{            
-                            Result = [string]$vsInstall            
-                        }          
-                    }         
+                Return @{            
+                    Result = [string]$vsInstall            
+                }          
+            }         
             
-                    # Must return a boolean: $true or $false            
-                    TestScript = {
-                        Write-Verbose -Message "Detecting a previous installation of Visual Studio Build Tools 2019"
+            # Must return a boolean: $true or $false            
+            TestScript = {
+                Write-Verbose -Message "Detecting a previous installation of Visual Studio Build Tools 2019"
 
-                        $x86Path = "HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*"
-                        $installedItemsX86 = Get-ItemProperty -Path $x86Path | Select-Object -Property DisplayName
+                $x86Path = "HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*"
+                $installedItemsX86 = Get-ItemProperty -Path $x86Path | Select-Object -Property DisplayName
     
-                        $x64Path = "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*"
-                        $installedItemsX64 = Get-ItemProperty -Path $x64Path | Select-Object -Property DisplayName
+                $x64Path = "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*"
+                $installedItemsX64 = Get-ItemProperty -Path $x64Path | Select-Object -Property DisplayName
 
-                        $installedItems = $installedItemsX86 + $installedItemsX64 
-                        $installedItems = $installedItems | Select-Object -Property DisplayName -Unique    
-                        $vsInstall = $installedItems | Where-Object -FilterScript { 
-                            $_ -match "Visual Studio Build Tools 2019" 
-                        }
+                $installedItems = $installedItemsX86 + $installedItemsX64 
+                $installedItems = $installedItems | Select-Object -Property DisplayName -Unique    
+                $vsInstall = $installedItems | Where-Object -FilterScript { 
+                    $_ -match "Visual Studio Build Tools 2019" 
+                }
             
-                        if ($vsInstall) {
-                            Write-Verbose -Message "Visual Studio Build Tools 2019 installed"  
-                            return $true;
-                        }
-                        else {
-                            Write-Verbose -Message "Visual Studio Build Tools 2019 not installed"
-                            return $false;
-                        }
+                if ($vsInstall) {
+                    Write-Verbose -Message "Visual Studio Build Tools 2019 installed"  
+                    return $true;
+                }
+                else {
+                    Write-Verbose -Message "Visual Studio Build Tools 2019 not installed"
+                    return $false;
+                }
             
                            
-                    }            
+            }            
             
-                    # Returns nothing            
-                    SetScript  = {
-                        $ExecutablePath = "C:\temp\vs_buildtools_16.exe"
-                        Invoke-WebRequest -Uri $vsInstaller -OutFile $ExecutablePath
-                        $installer = Get-Item -Path $ExecutablePath
-                        $Workloads = $VSBuildToolWorkloads
+            # Returns nothing            
+            SetScript  = {
+                $ExecutablePath = "C:\temp\vs_buildtools_16.exe"
+                Invoke-WebRequest -Uri $vsInstaller -OutFile $ExecutablePath
+                $installer = Get-Item -Path $ExecutablePath
+                $Workloads = $VSBuildToolWorkloads
 
-                        if ($installer) {
-                            $workloadArgs = ""
-                            foreach ($workload in $Workloads) {
-                                $workloadArgs += " --add $workload"
-                            }
-                            Write-Verbose -Message "Installing Visual Studio Build Tools 2019"
-                            Start-Process -FilePath $ExecutablePath -ArgumentList ('--quiet' + ' --includeRecommended' + $workloadArgs) -Wait -PassThru -Verb runAs
+                if ($installer) {
+                    $workloadArgs = ""
+                    foreach ($workload in $Workloads) {
+                        $workloadArgs += " --add $workload"
+                    }
+                    Write-Verbose -Message "Installing Visual Studio Build Tools 2019"
+                    Start-Process -FilePath $ExecutablePath -ArgumentList ('--quiet' + ' --includeRecommended' + $workloadArgs) -Wait -PassThru -Verb runAs
 
-                            #Remove-Item -Path $tempFolder -Force -Recurse -Confirm:$false
-                        }
-                        else {
-                            throw "The Installer could not be found at $ExecutablePath"
-                        }  
+                    #Remove-Item -Path $tempFolder -Force -Recurse -Confirm:$false
+                }
+                else {
+                    throw "The Installer could not be found at $ExecutablePath"
+                }  
                 
-                    }            
-                }            
-            }       
-        }
-
-
-    }
+            }            
+        }            
+    }       
 }
+
