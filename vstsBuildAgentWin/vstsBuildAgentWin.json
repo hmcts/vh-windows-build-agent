@@ -90,7 +90,7 @@
               "sourceAddressPrefix": "195.13.217.248/32",
               "destinationAddressPrefix": "*",
               "access": "Allow",
-              "priority": 1000,
+              "priority": 100,
               "direction": "Inbound"
             }
           },
@@ -104,7 +104,7 @@
               "sourceAddressPrefix": "195.122.17.211/32",
               "destinationAddressPrefix": "*",
               "access": "Allow",
-              "priority": 2000,
+              "priority": 200,
               "direction": "Inbound"
             }
           },
@@ -118,7 +118,7 @@
               "sourceAddressPrefix": "88.135.143.156/32",
               "destinationAddressPrefix": "*",
               "access": "Allow",
-              "priority": 5000,
+              "priority": 500,
               "direction": "Inbound"
             }
           },
@@ -132,7 +132,7 @@
               "sourceAddressPrefix": "213.121.161.124/32",
               "destinationAddressPrefix": "*",
               "access": "Allow",
-              "priority": 3000,
+              "priority": 300,
               "direction": "Inbound"
             }
           }
