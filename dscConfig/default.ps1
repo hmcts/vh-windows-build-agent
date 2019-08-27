@@ -8,23 +8,10 @@ Configuration default {
     $patCredential = Get-AutomationPSCredential -Name 'patToken'
 
     Import-DscResource -ModuleName VSTSAgent
-    Import-DscResource -ModuleName VisualStudioDSC
+    #Import-DscResource -ModuleName VisualStudioDSC
 
     Node 'local' {
 
-        For ($i = 1; $i -le $buildAgentCount; $i++) {
-
-            $VSTSAgent = "VSTSAgent" + $i
-
-            xVSTSAgent $VSTSAgent {
-                Name              = 'Agent' + $i
-                ServerUrl         = 'https://hmctsreform.visualstudio.com'
-                Pool              = 'vh-pool-dev'
-                AccountCredential = $patCredential
-                AgentDirectory    = 'C:\VSTSAgent'+ $i
-                Ensure            = 'Present'
-            }
-        }
 
         File DirectoryCopy {
             Ensure          = "Present" # Ensure the directory is Present on the target node.
@@ -224,7 +211,21 @@ Configuration default {
                 }  
                 
             }            
-        }            
+        }
+
+        For ($i = 1; $i -le $buildAgentCount; $i++) {
+
+            $VSTSAgent = "VSTSAgent" + $i
+
+            xVSTSAgent $VSTSAgent {
+                Name              = 'Agent' + $i
+                ServerUrl         = 'https://hmctsreform.visualstudio.com'
+                Pool              = 'vh-pool-dev'
+                AccountCredential = $patCredential
+                AgentDirectory    = 'C:\VSTSAgent'+ $i
+                Ensure            = 'Present'
+            }
+        }
     }       
 }
 
