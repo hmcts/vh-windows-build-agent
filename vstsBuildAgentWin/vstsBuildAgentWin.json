@@ -291,9 +291,13 @@
             "type": "CustomScriptExtension",
             "typeHandlerVersion": "1.9",
             "autoUpgradeMinorVersion": true,
-            "settings": {},
+            "settings": {
+              "fileUris": [
+                "https://raw.githubusercontent.com/hmcts/vh-windows-build-agent/vsts-win-agent-arm/initializeDisks.ps1"
+              ]
+            },
             "protectedSettings": {
-              "commandToExecute": "powershell -Command Get-Disk | Where-Object partitionstyle -eq 'raw' | Initialize-Disk -PartitionStyle MBR -PassThru | New-Partition -UseMaximumSize -DriveLetter 'F' | Format-Volume -FileSystem NTFS -Confirm:$false"
+              "commandToExecute": "powershell -ExecutionPolicy Unrestricted -file initializeDisks.ps1"
             }
           }
         },
@@ -305,7 +309,6 @@
           "dependsOn": [
             "[concat('Microsoft.Compute/virtualMachines/',variables('vmName'))]",
             "CustomScriptExtension"
-    
           ],
           "properties": {
             "publisher": "Microsoft.Powershell",
