@@ -282,7 +282,9 @@
       "apiVersion": "2018-06-01",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/',variables('vmName'))]"
+        "[concat('Microsoft.Compute/virtualMachines/',variables('vmName'))]",
+        "[concat('Microsoft.Compute/virtualMachines/extensions', variables('vmName'),'/CustomScriptExtension')]"
+
       ],
       "properties": {
         "publisher": "Microsoft.Powershell",
