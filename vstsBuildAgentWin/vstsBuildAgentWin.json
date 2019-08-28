@@ -8,12 +8,13 @@
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_B4ms",
+      "defaultValue": "Standard_D4s_v3",
       "allowedValues": [
         "Standard_B2s",
         "Standard_B2ms",
         "Standard_B4ms",
-        "Standard_B8ms"
+        "Standard_B8ms",
+        "Standard_D4s_v3"
       ]
     },
     "nodeConfigurationName": {
