@@ -283,7 +283,7 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/',variables('vmName'))]",
-        "[concat('Microsoft.Compute/virtualMachines/extensions','/CustomScriptExtension')]"
+        "[concat('CustomScriptExtension')]"
 
       ],
       "properties": {
