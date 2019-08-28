@@ -346,26 +346,24 @@
     {
       "apiVersion": "2018-06-01",
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "Initialize Disk",
+      "name": "[concat(variables('vmName'),'/CustomScriptExtension')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/',variables('vmName'))]"
       ],
       "tags": {
-          "displayName": "Initialize Disk"
+        "displayName": "Initialize Disk"
       },
       "properties": {
-          "publisher": "Microsoft.Compute",
-          "type": "CustomScriptExtension",
-          "typeHandlerVersion": "1.9",
-          "autoUpgradeMinorVersion": true,
-          "settings": {
-          },
-          "protectedSettings": {
-              "commandToExecute": "powershell -Command Get-Disk | Where-Object partitionstyle -eq 'raw' | Initialize-Disk -PartitionStyle MBR -PassThru | New-Partition -AssignDriveLetter -UseMaximumSize -DriveLetter 'F' | Format-Volume -FileSystem NTFS -Confirm:$false"
-          }
+        "publisher": "Microsoft.Compute",
+        "type": "CustomScriptExtension",
+        "typeHandlerVersion": "1.9",
+        "autoUpgradeMinorVersion": true,
+        "settings": {},
+        "protectedSettings": {
+          "commandToExecute": "powershell -Command Get-Disk | Where-Object partitionstyle -eq 'raw' | Initialize-Disk -PartitionStyle MBR -PassThru | New-Partition -AssignDriveLetter -UseMaximumSize -DriveLetter 'F' | Format-Volume -FileSystem NTFS -Confirm:$false"
+        }
       }
-  }
-    
+    }
   ]
 }
