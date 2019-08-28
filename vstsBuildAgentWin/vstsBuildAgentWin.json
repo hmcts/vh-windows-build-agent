@@ -253,7 +253,7 @@
           },
           "dataDisks": [
             {
-              "diskSizeGB": 128,
+              "diskSizeGB": 256,
               "lun": 0,
               "createOption": "Empty",
               "caching": "ReadWrite"
@@ -293,7 +293,7 @@
             "autoUpgradeMinorVersion": true,
             "settings": {},
             "protectedSettings": {
-              "commandToExecute": "powershell -Command Get-Disk | Where-Object partitionstyle -eq 'raw' | Initialize-Disk -PartitionStyle MBR -PassThru | New-Partition -AssignDriveLetter -UseMaximumSize -DriveLetter 'F' | Format-Volume -FileSystem NTFS -Confirm:$false"
+              "commandToExecute": "powershell -Command Get-Disk | Where-Object partitionstyle -eq 'raw' | Initialize-Disk -PartitionStyle MBR -PassThru | New-Partition -UseMaximumSize -DriveLetter 'F' | Format-Volume -FileSystem NTFS -Confirm:$false"
             }
           }
         },
