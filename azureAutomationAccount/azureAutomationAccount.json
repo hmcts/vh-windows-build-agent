@@ -65,7 +65,7 @@
     {
       "type": "Microsoft.Automation/automationAccounts/softwareUpdateConfigurations",
       "apiVersion": "2018-06-30",
-      "name": "[concat(parameters('automationAccountName'), '/WindowsUpdatesRecurring')]",
+      "name": "[concat(parameters('automationAccountName'), '/WindowsUpdatesRecurring2')]",
       "dependsOn": [
         "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
       ],
@@ -104,7 +104,8 @@
           "expiryTime": "9999-12-31T23:59:00+00:00",
           "interval": 1,
           "frequency": "Day",
-          "timeZone": "Europe/London"
+          "timeZone": "Europe/London",
+          "isEnabled": true
         }
       }
     }
