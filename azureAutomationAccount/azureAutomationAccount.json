@@ -30,7 +30,8 @@
         "sku": {
           "name": "Basic"
         }
-      }
+      },
+      "resources": []
     },
     {
       "type": "Microsoft.Automation/automationAccounts/modules",
@@ -57,6 +58,46 @@
         "contentLink": {
           "uri": "[variables('VisualStudioDSC').url]",
           "version": "[variables('VisualStudioDSC').version]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Automation/automationAccounts/softwareUpdateConfigurations",
+      "apiVersion": "2017-05-15-preview",
+      "name": "[concat(parameters('automationAccountName'), '/WindowsUpdatesRecurring')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
+      ],
+      "properties": {
+        "updateConfiguration": {
+          "operatingSystem": "Windows",
+          "windows": {
+            "includedUpdateClassifications": "Critical, Security, UpdateRollup, ServicePack, Definition",
+            "excludedKbNumbers": [],
+            "includedKbNumbers": [],
+            "rebootSetting": "IfRequired"
+          },
+          "duration": "PT2H",
+          "azureVirtualMachines": [],
+          "nonAzureComputerNames": [],
+          "targets": {
+            "azureQueries": [
+              {
+                "tagSettings": {
+                  "tags": {
+                    "securityPatchingWindows": "on"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "scheduleInfo": {
+          "startTime": "2019-08-29T13:00:00+01:00",
+          "expiryTime": "9999-12-31T23:59:00+00:00",
+          "interval": 1,
+          "frequency": "Day",
+          "timeZone": "Europe/London"
         }
       }
     }
