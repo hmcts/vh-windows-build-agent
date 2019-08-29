@@ -89,11 +89,12 @@
                 ],
                 "tagSettings": {
                   "tags": {
-                    "securityPatchingWindows": "on"
+                    "securityPatchingWindows": ["on"]
                   },
-                  "filterOperator": "All"
+                  "filterOperator": "Any"
 
-                }
+                },
+                "location": null
               }
             ]
           }
