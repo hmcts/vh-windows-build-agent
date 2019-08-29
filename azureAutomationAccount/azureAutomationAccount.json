@@ -84,7 +84,7 @@
             "azureQueries": [
               {
                 "scope": [
-                  "*"
+                  "[subscription()]"
                 ],
                 "tagSettings": {
                   "tags": {
