@@ -89,10 +89,11 @@
                 ],
                 "tagSettings": {
                   "tags": {
-                    "securityPatchingWindows": ["on"]
+                    "securityPatchingWindows": [
+                      "on"
+                    ]
                   },
                   "filterOperator": "Any"
-
                 },
                 "location": null
               }
@@ -100,7 +101,6 @@
           }
         },
         "scheduleInfo": {
-          "startTime": "2019-08-29T13:00:00+01:00",
           "expiryTime": "9999-12-31T23:59:00+00:00",
           "interval": 1,
           "frequency": "Day",
