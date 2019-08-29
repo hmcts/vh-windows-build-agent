@@ -17,7 +17,8 @@
       "name": "VisualStudioDSC",
       "version": "1.0.1",
       "url": "https://psg-prod-eastus.azureedge.net/packages/visualstudiodsc.1.0.1.nupkg"
-    }
+    },
+    "softwareUpdateConfigurationsScope": "[subscription().id]"
   },
   "resources": [
     {
@@ -84,7 +85,7 @@
             "azureQueries": [
               {
                 "scope": [
-                  "[subscription()]"
+                  "[variables('softwareUpdateConfigurationsScope')]"
                 ],
                 "tagSettings": {
                   "tags": {
