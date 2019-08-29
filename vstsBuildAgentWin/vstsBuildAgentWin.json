@@ -227,7 +227,8 @@
       "name": "[variables('vmName')]",
       "location": "[resourceGroup().location]",
       "tags": {
-        "displayName": "VirtualMachine"
+        "displayName": "VirtualMachine",
+        "securityPatchingWindows": "on"
       },
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/', variables('vhdStorageAccountName'))]",
