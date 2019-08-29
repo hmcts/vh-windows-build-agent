@@ -83,6 +83,9 @@
           "targets": {
             "azureQueries": [
               {
+                "scope": [
+                  "*"
+                ],
                 "tagSettings": {
                   "tags": {
                     "securityPatchingWindows": "on"
