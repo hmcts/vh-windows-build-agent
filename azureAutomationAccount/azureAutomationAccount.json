@@ -90,7 +90,9 @@
                 "tagSettings": {
                   "tags": {
                     "securityPatchingWindows": "on"
-                  }
+                  },
+                  "filterOperator": "All"
+
                 }
               }
             ]
