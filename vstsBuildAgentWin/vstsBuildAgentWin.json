@@ -255,7 +255,7 @@
           },
           "dataDisks": [
             {
-              "diskSizeGB": 256,
+              "diskSizeGB": 512,
               "lun": 0,
               "createOption": "Empty",
               "caching": "ReadWrite"

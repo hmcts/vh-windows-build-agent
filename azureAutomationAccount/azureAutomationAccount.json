@@ -65,7 +65,7 @@
     {
       "type": "Microsoft.Automation/automationAccounts/softwareUpdateConfigurations",
       "apiVersion": "2018-06-30",
-      "name": "[concat(parameters('automationAccountName'), '/WindowsUpdatesRecurring2')]",
+      "name": "[concat(parameters('automationAccountName'), '/WindowsUpdatesRecurring')]",
       "dependsOn": [
         "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
       ],
