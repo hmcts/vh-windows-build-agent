@@ -74,9 +74,7 @@
           "name": "Basic"
         }
       },
-      "resources": [
-
-      ]
+      "resources": []
     },
     {
       "type": "Microsoft.OperationalInsights/workspaces",
@@ -89,6 +87,18 @@
         }
       },
       "resources": [
+        {
+          "name": "Automation",
+          "type": "linkedServices",
+          "apiVersion": "2015-11-01-preview",
+          "dependsOn": [
+            "[concat('Microsoft.OperationalInsights/workspaces/', variables('workspaceName'))]",
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]"
+          ],
+          "properties": {
+            "resourceId": "[resourceId('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]"
+          }
+        },
         {
           "apiVersion": "2015-11-01-preview",
           "location": "[resourceGroup().location]",
