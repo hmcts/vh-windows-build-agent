@@ -56,7 +56,7 @@
       "url": "https://psg-prod-eastus.azureedge.net/packages/visualstudiodsc.1.0.1.nupkg"
     },
     "Updates": {
-      "Name": "[Concat('Updates', '(', parameters('workspaceName'), ')')]",
+      "Name": "[Concat('Updates', '(', variables('workspaceName'), ')')]",
       "GalleryName": "Updates"
     },
     "softwareUpdateConfigurationsScope": "[subscription().id]",
