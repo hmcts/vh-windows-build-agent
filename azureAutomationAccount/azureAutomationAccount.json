@@ -5,6 +5,43 @@
     "automationAccountName": {
       "type": "string",
       "defaultValue": "vh-automation-dev"
+    },
+    "workspaceName": {
+      "type": "string",
+      "defaultValue": "workspaceName"
+    },
+    "workspaceLocation": {
+      "type": "string",
+      "defaultValue": "uksouth",
+      "allowedValues": [
+        "australiacentral",
+        "australiaeast",
+        "australiasoutheast",
+        "brazilsouth",
+        "canadacentral",
+        "centralindia",
+        "centralus",
+        "eastasia",
+        "eastus",
+        "eastus2",
+        "francecentral",
+        "japaneast",
+        "koreacentral",
+        "northcentralus",
+        "northeurope",
+        "southafricanorth",
+        "southcentralus",
+        "southeastasia",
+        "uksouth",
+        "ukwest",
+        "westcentralus",
+        "westeurope",
+        "westus",
+        "westus2"
+      ],
+      "metadata": {
+        "description": "Specifies the location in which to create the workspace."
+      }
     }
   },
   "variables": {
@@ -17,6 +54,10 @@
       "name": "VisualStudioDSC",
       "version": "1.0.1",
       "url": "https://psg-prod-eastus.azureedge.net/packages/visualstudiodsc.1.0.1.nupkg"
+    },
+    "Updates": {
+      "Name": "[Concat('Updates', '(', parameters('workspaceName'), ')')]",
+      "GalleryName": "Updates"
     },
     "softwareUpdateConfigurationsScope": "[subscription().id]"
   },
@@ -32,7 +73,41 @@
           "name": "Basic"
         }
       },
-      "resources": []
+      "resources": [
+
+      ]
+    },
+    {
+      "type": "Microsoft.OperationalInsights/workspaces",
+      "name": "[parameters('workspaceName')]",
+      "apiVersion": "2015-11-01-preview",
+      "location": "[parameters('workspaceLocation')]",
+      "properties": {
+        "features": {
+          "searchVersion": 1
+        }
+      },
+      "resources": [
+        {
+          "apiVersion": "2015-11-01-preview",
+          "location": "[resourceGroup().location]",
+          "name": "[variables('Updates').Name]",
+          "type": "Microsoft.OperationsManagement/solutions",
+          "id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.OperationsManagement/solutions/', variables('Updates').Name)]",
+          "dependsOn": [
+            "[concat('Microsoft.OperationalInsights/workspaces/', parameters('workspaceName'))]"
+          ],
+          "properties": {
+            "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces/', parameters('workspaceName'))]"
+          },
+          "plan": {
+            "name": "[variables('Updates').Name]",
+            "publisher": "Microsoft",
+            "product": "[Concat('OMSGallery/', variables('Updates').GalleryName)]",
+            "promotionCode": ""
+          }
+        }
+      ]
     },
     {
       "type": "Microsoft.Automation/automationAccounts/modules",
@@ -73,7 +148,7 @@
         "updateConfiguration": {
           "operatingSystem": "Windows",
           "windows": {
-            "includedUpdateClassifications": "Critical, Security, UpdateRollup, ServicePack, Definition",
+            "includedUpdateClassifications": "Critical, Security, UpdateRollup, ServicePack, Definition, Updates",
             "excludedKbNumbers": [],
             "includedKbNumbers": [],
             "rebootSetting": "IfRequired"
