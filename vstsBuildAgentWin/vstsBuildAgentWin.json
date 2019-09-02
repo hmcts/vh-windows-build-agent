@@ -6,9 +6,13 @@
       "type": "string",
       "defaultValue": "vh-automation-dev"
     },
+    "vmName": {
+      "type": "string",
+      "defaultValue": "vh-vsts-agent-win"
+    },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_D4s_v3",
+      "defaultValue": "Standard_B4ms",
       "allowedValues": [
         "Standard_B2s",
         "Standard_B2ms",
@@ -19,7 +23,7 @@
     },
     "nodeConfigurationName": {
       "type": "string",
-      "defaultValue": "default.local"
+      "defaultValue": "default.localhost"
     },
     "adminUsername": {
       "type": "string",
@@ -67,7 +71,7 @@
     "vhdStorageType": "Standard_LRS",
     "publicIPAddressName": "myPublicIP",
     "publicIPAddressType": "Dynamic",
-    "vmName": "MyWindowsVM",
+    "vmName": "[parameters('vmName')]",
     "virtualNetworkName": "MyVNET",
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetId'), '/subnets/', variables('subnetName'))]",
@@ -75,6 +79,39 @@
     "workspaceName": "[parameters('automationAccountName')]"
   },
   "resources": [
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "name": "",
+      "apiVersion": "2018-02-14",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "enabledForDeployment": true,
+        "enabledForDiskEncryption": true,
+        "enabledForTemplateDeployment": true,
+        "tenantId": "[subscription().tenantId]",
+        "accessPolicies": [
+          {
+            "tenantId": "[subscription().tenantId]",
+            "objectId": "20a66321-932e-4d33-a316-682849a06d68",
+            "permissions": {
+              "secrets": [
+                "get"
+              ],
+              "certificates": [
+                "get"
+              ],
+              "keys": [
+                "get"
+              ]
+            }
+          }
+        ],
+        "sku": {
+          "name": "standard",
+          "family": "A"
+        }
+      }
+    },
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/networkSecurityGroups",

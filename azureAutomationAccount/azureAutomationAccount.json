@@ -6,38 +6,12 @@
       "type": "string",
       "defaultValue": "vh-automation-dev"
     },
-    "workspaceName": {
-      "type": "string",
-      "defaultValue": "workspaceName"
-    },
     "workspaceLocation": {
       "type": "string",
       "defaultValue": "uksouth",
       "allowedValues": [
-        "australiacentral",
-        "australiaeast",
-        "australiasoutheast",
-        "brazilsouth",
-        "canadacentral",
-        "centralindia",
-        "centralus",
-        "eastasia",
-        "eastus",
-        "eastus2",
-        "francecentral",
-        "japaneast",
-        "koreacentral",
-        "northcentralus",
-        "northeurope",
-        "southafricanorth",
-        "southcentralus",
-        "southeastasia",
         "uksouth",
-        "ukwest",
-        "westcentralus",
-        "westeurope",
-        "westus",
-        "westus2"
+        "ukwest"
       ],
       "metadata": {
         "description": "Specifies the location in which to create the workspace."
@@ -80,7 +54,7 @@
       "type": "Microsoft.OperationalInsights/workspaces",
       "name": "[variables('workspaceName')]",
       "apiVersion": "2015-11-01-preview",
-      "location": "[parameters('workspaceLocation')]",
+      "location": "[resourceGroup().location]",
       "properties": {
         "features": {
           "searchVersion": 1
