@@ -72,7 +72,8 @@
     "publicIPAddressName": "myPublicIP",
     "publicIPAddressType": "Dynamic",
     "vmName": "[parameters('vmName')]",
-    "virtualNetworkName": "MyVNET",
+    "virtualNetworkName": "[parameters('vmName')]",
+    "keyVaultName": "[parameters('vmName')]",
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetId'), '/subnets/', variables('subnetName'))]",
     "vhdStorageAccountName": "[concat('vhdstorage', uniqueString(resourceGroup().id))]",
@@ -81,7 +82,7 @@
   "resources": [
     {
       "type": "Microsoft.KeyVault/vaults",
-      "name": "",
+      "name": "[variables('keyVaultName')]",
       "apiVersion": "2018-02-14",
       "location": "[resourceGroup().location]",
       "properties": {
