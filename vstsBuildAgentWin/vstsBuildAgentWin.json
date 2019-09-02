@@ -8,7 +8,7 @@
     },
     "vmName": {
       "type": "string",
-      "defaultValue": "vh-vsts-agent-win"
+      "defaultValue": "vh-vsts-agent"
     },
     "vmSize": {
       "type": "string",
