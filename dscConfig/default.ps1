@@ -10,7 +10,7 @@ Configuration default {
     Import-DscResource -ModuleName VSTSAgent
     #Import-DscResource -ModuleName VisualStudioDSC
 
-    Node 'local' {
+    Node 'localhost' {
 
 
         File DirectoryCopy {
@@ -59,60 +59,53 @@ Configuration default {
         }
 
         Script VSBuildTools2019 {
-            # Must return a hashtable with at least one key            
-            # named 'Result' of type String            
+            # Must return a hashtable with at least one key
+            # named 'Result' of type String
             GetScript  = {
 
                 Write-Verbose -Message "Detecting a previous installation of Visual Studio Build Tools 2019"
 
                 $x86Path = "HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*"
                 $installedItemsX86 = Get-ItemProperty -Path $x86Path | Select-Object -Property DisplayName
-    
                 $x64Path = "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*"
                 $installedItemsX64 = Get-ItemProperty -Path $x64Path | Select-Object -Property DisplayName
 
-                $installedItems = $installedItemsX86 + $installedItemsX64 
-                $installedItems = $installedItems | Select-Object -Property DisplayName -Unique    
-                $vsInstall = $installedItems | Where-Object -FilterScript { 
-                    $_ -match "Visual Studio Build Tools 2019" 
+                $installedItems = $installedItemsX86 + $installedItemsX64
+                $installedItems = $installedItems | Select-Object -Property DisplayName -Unique
+                $vsInstall = $installedItems | Where-Object -FilterScript {
+                    $_ -match "Visual Studio Build Tools 2019"
                 }
-            
-            
-                   
-                Return @{            
-                    Result = [string]$vsInstall            
-                }          
-            }         
-            
-            # Must return a boolean: $true or $false            
+
+                Return @{
+                    Result = [string]$vsInstall
+                }
+            }
+
+            # Must return a boolean: $true or $false
             TestScript = {
                 Write-Verbose -Message "Detecting a previous installation of Visual Studio Build Tools 2019"
 
                 $x86Path = "HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*"
                 $installedItemsX86 = Get-ItemProperty -Path $x86Path | Select-Object -Property DisplayName
-    
                 $x64Path = "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*"
                 $installedItemsX64 = Get-ItemProperty -Path $x64Path | Select-Object -Property DisplayName
 
-                $installedItems = $installedItemsX86 + $installedItemsX64 
-                $installedItems = $installedItems | Select-Object -Property DisplayName -Unique    
-                $vsInstall = $installedItems | Where-Object -FilterScript { 
-                    $_ -match "Visual Studio Build Tools 2019" 
+                $installedItems = $installedItemsX86 + $installedItemsX64
+                $installedItems = $installedItems | Select-Object -Property DisplayName -Unique
+                $vsInstall = $installedItems | Where-Object -FilterScript {
+                    $_ -match "Visual Studio Build Tools 2019"
                 }
-            
                 if ($vsInstall) {
-                    Write-Verbose -Message "Visual Studio Build Tools 2019 installed"  
+                    Write-Verbose -Message "Visual Studio Build Tools 2019 installed"
                     return $true;
                 }
                 else {
                     Write-Verbose -Message "Visual Studio Build Tools 2019 not installed"
                     return $false;
                 }
-            
-                           
-            }            
-            
-            # Returns nothing            
+            }
+
+            # Returns nothing
             SetScript  = {
                 $vsInstaller = "https://aka.ms/vs/16/release/vs_buildtools.exe"
                 $VSBuildToolWorkloads = @(
@@ -139,9 +132,8 @@ Configuration default {
                 }
                 else {
                     throw "The Installer could not be found at $ExecutablePath"
-                }  
-                
-            }            
+                }
+            }
         }
 
         For ($i = 1; $i -le $buildAgentCount; $i++) {
@@ -157,6 +149,6 @@ Configuration default {
                 Ensure            = 'Present'
             }
         }
-    }       
+    }
 }
 
