@@ -52,7 +52,7 @@
           "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
         ],
         "properties": {
-          "value": "[uniqueString(resourceGroup().id, '!VH')]"
+          "value": "[concat(uniqueString(resourceGroup().id), '!VH')]"
         }
       }
     ]
