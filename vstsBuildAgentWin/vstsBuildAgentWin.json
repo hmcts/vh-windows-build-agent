@@ -59,6 +59,9 @@
     "refreshFrequencyMins": {
       "type": "int",
       "defaultValue": 30
+    },
+    "keyEncryptionKeyURL": {
+      "type": "string"
     }
   },
   "variables": {
@@ -419,7 +422,7 @@
               "EncryptionOperation": "EnableEncryption",
               "KeyVaultURL": "[reference(variables('keyVaultResourceId'),'2016-10-01').vaultUri]",
               "KeyVaultResourceId": "[variables('keyVaultResourceID')]",
-              "KeyEncryptionKeyURL": "[concat(reference(variables('keyVaultResourceId'),'2016-10-01').vaultUri, 'keys/agent-disk-key')]",
+              "KeyEncryptionKeyURL": "[parameters('keyEncryptionKeyURL')]",
               "KekVaultResourceId": "[variables('keyVaultResourceID')]",
               "KeyEncryptionAlgorithm": "RSA-OAEP",
               "VolumeType": "All",

@@ -7,6 +7,9 @@
     },
     "adminPassword": {
       "value": "someSuperSecretPassword"
+    },
+    "keyEncryptionKeyURL": {
+      "value": "string"
     }
   }
 }
