@@ -5,11 +5,14 @@
       "vmName": {
         "type": "string",
         "defaultValue": "vh-vsts-agent"
+      },
+      "objectId": {
+          "type": "string",
+          "defaultValue": "20a66321-932e-4d33-a316-682849a06d68"
       }
     },
     "variables": {
       "keyVaultName": "[parameters('vmName')]"
-  
     },
     "resources": [
       {
@@ -25,16 +28,11 @@
           "accessPolicies": [
             {
               "tenantId": "[subscription().tenantId]",
-              "objectId": "20a66321-932e-4d33-a316-682849a06d68",
+              "objectId": "[parameters('objectId')]",
               "permissions": {
-                "secrets": [
-                  "get"
-                ],
-                "certificates": [
-                  "get"
-                ],
                 "keys": [
-                  "get"
+                  "get",
+                  "create"
                 ]
               }
             }
