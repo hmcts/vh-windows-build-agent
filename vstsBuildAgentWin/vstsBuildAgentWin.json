@@ -77,7 +77,9 @@
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetId'), '/subnets/', variables('subnetName'))]",
     "vhdStorageAccountName": "[concat('vhdstorage', uniqueString(resourceGroup().id))]",
-    "workspaceName": "[parameters('automationAccountName')]"
+    "workspaceName": "[parameters('automationAccountName')]",
+    "keyVaultResourceID": "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]"
+
   },
   "resources": [
     {
@@ -428,6 +430,29 @@
                   "TypeName": "System.String"
                 }
               ]
+            }
+          }
+        },
+        {
+          "type": "extensions",
+          "name": "AzureDiskEncryption",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2017-03-30",
+          "properties": {
+            "publisher": "Microsoft.Azure.Security",
+            "type": "AzureDiskEncryption",
+            "typeHandlerVersion": "2.2",
+            "autoUpgradeMinorVersion": true,
+            "forceUpdateTag": "1.0",
+            "settings": {
+              "EncryptionOperation": "EnableEncryption",
+              "KeyVaultURL": "[reference(variables('keyVaultResourceId'),'2016-10-01').vaultUri]",
+              "KeyVaultResourceId": "[variables('keyVaultResourceID')]",
+              "KeyEncryptionKeyURL": "[concat(reference(variables('keyVaultResourceId'),'2016-10-01').vaultUri, '/keys/agent-key')]",
+              "KekVaultResourceId": "[variables('keyVaultResourceID')]",
+              "KeyEncryptionAlgorithm": "RSA-OAEP",
+              "VolumeType": "All",
+              "ResizeOSDisk": false
             }
           }
         }
