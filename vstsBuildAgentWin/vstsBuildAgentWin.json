@@ -83,39 +83,6 @@
   },
   "resources": [
     {
-      "type": "Microsoft.KeyVault/vaults",
-      "name": "[variables('keyVaultName')]",
-      "apiVersion": "2018-02-14",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "enabledForDeployment": true,
-        "enabledForDiskEncryption": true,
-        "enabledForTemplateDeployment": true,
-        "tenantId": "[subscription().tenantId]",
-        "accessPolicies": [
-          {
-            "tenantId": "[subscription().tenantId]",
-            "objectId": "20a66321-932e-4d33-a316-682849a06d68",
-            "permissions": {
-              "secrets": [
-                "get"
-              ],
-              "certificates": [
-                "get"
-              ],
-              "keys": [
-                "get"
-              ]
-            }
-          }
-        ],
-        "sku": {
-          "name": "standard",
-          "family": "A"
-        }
-      }
-    },
-    {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('vmName')]",
@@ -439,7 +406,8 @@
           "location": "[resourceGroup().location]",
           "apiVersion": "2017-03-30",
           "dependsOn": [
-            "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
+            "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]",
+            "CustomScriptExtension"
           ],
           "properties": {
             "publisher": "Microsoft.Azure.Security",
@@ -451,7 +419,7 @@
               "EncryptionOperation": "EnableEncryption",
               "KeyVaultURL": "[reference(variables('keyVaultResourceId'),'2016-10-01').vaultUri]",
               "KeyVaultResourceId": "[variables('keyVaultResourceID')]",
-              "KeyEncryptionKeyURL": "[concat(reference(variables('keyVaultResourceId'),'2016-10-01').vaultUri, '/keys/agent-disk-key')]",
+              "KeyEncryptionKeyURL": "[concat(reference(variables('keyVaultResourceId'),'2016-10-01').vaultUri, 'keys/agent-disk-key')]",
               "KekVaultResourceId": "[variables('keyVaultResourceID')]",
               "KeyEncryptionAlgorithm": "RSA-OAEP",
               "VolumeType": "All",

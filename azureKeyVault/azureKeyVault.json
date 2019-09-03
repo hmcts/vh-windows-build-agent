@@ -1,0 +1,49 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "vmName": {
+        "type": "string",
+        "defaultValue": "vh-vsts-agent"
+      }
+    },
+    "variables": {
+      "keyVaultName": "[parameters('vmName')]"
+  
+    },
+    "resources": [
+      {
+        "type": "Microsoft.KeyVault/vaults",
+        "name": "[variables('keyVaultName')]",
+        "apiVersion": "2018-02-14",
+        "location": "[resourceGroup().location]",
+        "properties": {
+          "enabledForDeployment": true,
+          "enabledForDiskEncryption": true,
+          "enabledForTemplateDeployment": true,
+          "tenantId": "[subscription().tenantId]",
+          "accessPolicies": [
+            {
+              "tenantId": "[subscription().tenantId]",
+              "objectId": "20a66321-932e-4d33-a316-682849a06d68",
+              "permissions": {
+                "secrets": [
+                  "get"
+                ],
+                "certificates": [
+                  "get"
+                ],
+                "keys": [
+                  "get"
+                ]
+              }
+            }
+          ],
+          "sku": {
+            "name": "standard",
+            "family": "A"
+          }
+        }
+      }
+    ]
+  }
