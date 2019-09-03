@@ -82,7 +82,6 @@
     "vhdStorageAccountName": "[concat('vhdstorage', uniqueString(resourceGroup().id))]",
     "workspaceName": "[parameters('automationAccountName')]",
     "keyVaultResourceID": "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]"
-
   },
   "resources": [
     {
@@ -428,6 +427,36 @@
               "VolumeType": "All",
               "ResizeOSDisk": false
             }
+          }
+        },
+        {
+          "type": "extensions",
+          "name": "IaaSAntimalware",
+          "apiVersion": "2017-03-30",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+            "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
+          ],
+          "properties": {
+            "publisher": "Microsoft.Azure.Security",
+            "type": "IaaSAntimalware",
+            "typeHandlerVersion": "1.3",
+            "settings": {
+              "AntimalwareEnabled": "true",
+              "Exclusions": {
+                "Extensions": "",
+                "Paths": "",
+                "Processes": ""
+              },
+              "RealtimeProtectionEnabled": "true",
+              "ScheduledScanSettings": {
+                "isEnabled": "true",
+                "scanType": "Quick",
+                "day": "7",
+                "time": "120"
+              }
+            },
+            "protectedSettings": null
           }
         }
       ]
