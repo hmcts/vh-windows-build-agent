@@ -24,8 +24,8 @@ Configuration default {
 
         xPfxImport CompanyCert
         {
-            Thumbprint = vhVstsAutomationCertificateDev.Thumbprint
-            Path       = vhVstsAutomationCertificateDev
+            Thumbprint = $vhVstsAutomationCertificateDev.Thumbprint
+            Path       = $vhVstsAutomationCertificateDev
             Location   = 'LocalMachine'
             Store      = 'My'
             Credential = $Credential
