@@ -20,7 +20,7 @@ param (
 $password = ConvertTo-SecureString -String $certificatePassword -AsPlainText -Force
 Write-Output "Trying to fetch the certificate"
 
-$cert = Get-AzAutomationCertificate -AutomationAccountName $automationAccountName -Name $certificateName -ResourceGroupName $automationAccountName -ErrorAction Continue
+$cert = Get-AzAutomationCertificate -AutomationAccountName $automationAccountName -Name $certificateName -ResourceGroupName $automationAccountName -ErrorAction SilentlyContinue
 if (!$cert) {
     New-AzAutomationCertificate -AutomationAccountName $automationAccountName -Name $certificateName -Path $certificatePath -Password $password -ResourceGroupName $automationAccountName
 }
