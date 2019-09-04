@@ -58,6 +58,18 @@
             "properties": {
                 "value": "[concat(uniqueString(resourceGroup().id), '!VH')]"
             }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "name": "[concat(variables('keyVaultName'), '/', 'adminUsername')]",
+            "apiVersion": "2018-02-14",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
+            ],
+            "properties": {
+                "value": "[uniqueString(resourceGroup().id)]"
+            }
         }
     ]
 }
