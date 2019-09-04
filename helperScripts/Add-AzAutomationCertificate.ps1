@@ -6,6 +6,10 @@ param (
 
     [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
+    $certificatePassword,
+
+    [Parameter(Mandatory=$true)]
+    [ValidateNotNullOrEmpty()]
     $certificatePath,
 
     [Parameter(Mandatory=$true)]
@@ -13,5 +17,5 @@ param (
     $automationAccountName
 )
 
-$Password = ConvertTo-SecureString -String "Password" -AsPlainText -Force
-New-AzureRmAutomationCertificate -AutomationAccountName $automationAccountName -Name $certificateName -Path $certificatePath -Password $Password -ResourceGroupName $automationAccountName
+$Password = ConvertTo-SecureString -String $certificatePassword -AsPlainText -Force
+New-AzAutomationCertificate -AutomationAccountName $automationAccountName -Name $certificateName -Path $certificatePath -Password $Password -ResourceGroupName $automationAccountName
