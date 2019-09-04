@@ -63,7 +63,7 @@ Configuration default {
             # named 'Result' of type String
             GetScript  = {
 
-                Write-Verbose -Message "Detecting a previous installation of Visual Studio Build Tools 2019"
+                Write-Verbose -Message "Detecting a previous installation of Visual Studio Community 2019"
 
                 $x86Path = "HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*"
                 $installedItemsX86 = Get-ItemProperty -Path $x86Path | Select-Object -Property DisplayName
@@ -73,7 +73,7 @@ Configuration default {
                 $installedItems = $installedItemsX86 + $installedItemsX64
                 $installedItems = $installedItems | Select-Object -Property DisplayName -Unique
                 $vsInstall = $installedItems | Where-Object -FilterScript {
-                    $_ -match "Visual Studio Build Tools 2019"
+                    $_ -match "Visual Studio Community 2019"
                 }
 
                 Return @{
@@ -83,7 +83,7 @@ Configuration default {
 
             # Must return a boolean: $true or $false
             TestScript = {
-                Write-Verbose -Message "Detecting a previous installation of Visual Studio Build Tools 2019"
+                Write-Verbose -Message "Detecting a previous installation of Visual Studio Community 2019"
 
                 $x86Path = "HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*"
                 $installedItemsX86 = Get-ItemProperty -Path $x86Path | Select-Object -Property DisplayName
@@ -93,29 +93,28 @@ Configuration default {
                 $installedItems = $installedItemsX86 + $installedItemsX64
                 $installedItems = $installedItems | Select-Object -Property DisplayName -Unique
                 $vsInstall = $installedItems | Where-Object -FilterScript {
-                    $_ -match "Visual Studio Build Tools 2019"
+                    $_ -match "Visual Studio Community 2019"
                 }
                 if ($vsInstall) {
-                    Write-Verbose -Message "Visual Studio Build Tools 2019 installed"
+                    Write-Verbose -Message "Visual Studio Community 2019 installed"
                     return $true;
                 }
                 else {
-                    Write-Verbose -Message "Visual Studio Build Tools 2019 not installed"
+                    Write-Verbose -Message "Visual Studio Community 2019 not installed"
                     return $false;
                 }
             }
 
             # Returns nothing
             SetScript  = {
-                $vsInstaller = "https://aka.ms/vs/16/release/vs_buildtools.exe"
+                $vsInstaller = "https://aka.ms/vs/16/release/vs_community.exe"
                 $VSBuildToolWorkloads = @(
-                    "Microsoft.VisualStudio.Workload.MSBuildTools"
-                    "Microsoft.VisualStudio.Workload.NetCoreBuildTools"
-                    "Microsoft.VisualStudio.Workload.NodeBuildTools"
-                    "Microsoft.VisualStudio.Workload.WebBuildTools"
+                    "Microsoft.VisualStudio.Workload.NetWeb",
+                    "Microsoft.VisualStudio.Workload.NetCoreTools",
+                    "Microsoft.Net.Core.Component.SDK.2.2"
                 )
 
-                $ExecutablePath = "C:\temp\vs_buildtools_16.exe"
+                $ExecutablePath = "C:\temp\vs_community.exe"
                 Invoke-WebRequest -Uri $vsInstaller -OutFile $ExecutablePath
                 $installer = Get-Item -Path $ExecutablePath
                 $Workloads = $VSBuildToolWorkloads
@@ -125,10 +124,8 @@ Configuration default {
                     foreach ($workload in $Workloads) {
                         $workloadArgs += " --add $workload"
                     }
-                    Write-Verbose -Message "Installing Visual Studio Build Tools 2019"
+                    Write-Verbose -Message "Installing Visual Studio Community 2019"
                     Start-Process -FilePath $ExecutablePath -ArgumentList ('--quiet' + ' --includeRecommended' + $workloadArgs) -Wait -PassThru -Verb runAs
-
-                    #Remove-Item -Path $tempFolder -Force -Recurse -Confirm:$false
                 }
                 else {
                     throw "The Installer could not be found at $ExecutablePath"
@@ -151,4 +148,3 @@ Configuration default {
         }
     }
 }
-
