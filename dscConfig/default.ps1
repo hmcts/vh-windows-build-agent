@@ -7,8 +7,11 @@ Configuration default {
 
     $patCredential = Get-AutomationPSCredential -Name 'patToken'
 
+    $vhVstsAutomationCertificateDev = Get-AutomationPSCredential -Name 'vh_vsts_automation_dev'
+
+
     Import-DscResource -ModuleName VSTSAgent
-    #Import-DscResource -ModuleName VisualStudioDSC
+    Import-DscResource -ModuleName xCertificate
 
     Node 'localhost' {
 
@@ -17,6 +20,15 @@ Configuration default {
             Ensure          = "Present" # Ensure the directory is Present on the target node.
             Type            = "Directory" # The default is File.
             DestinationPath = "C:\temp"
+        }
+
+        xPfxImport CompanyCert
+        {
+            Thumbprint = vhVstsAutomationCertificateDev.Thumbprint
+            Path       = vhVstsAutomationCertificateDev
+            Location   = 'LocalMachine'
+            Store      = 'My'
+            Credential = $Credential
         }
 
         Script javaSDK {
