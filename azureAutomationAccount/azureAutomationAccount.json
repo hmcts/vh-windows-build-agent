@@ -24,6 +24,11 @@
       "version": "2.0.8",
       "url": "https://psg-prod-eastus.azureedge.net/packages/vstsagent.2.0.8.nupkg"
     },
+    "xCertificate": {
+      "name": "xCertificate",
+      "version": "3.2.0",
+      "url": "https://psg-prod-eastus.azureedge.net/packages/xcertificate.3.2.0.nupkg"
+    },
     "VisualStudioDSC": {
       "name": "VisualStudioDSC",
       "version": "1.0.1",
@@ -105,6 +110,20 @@
         "contentLink": {
           "uri": "[variables('VSTSAgent').url]",
           "version": "[variables('VSTSAgent').version]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Automation/automationAccounts/modules",
+      "apiVersion": "2015-10-31",
+      "name": "[concat(parameters('automationAccountName'), '/xCertificate')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
+      ],
+      "properties": {
+        "contentLink": {
+          "uri": "[variables('xCertificate').url]",
+          "version": "[variables('xCertificate').version]"
         }
       }
     },
