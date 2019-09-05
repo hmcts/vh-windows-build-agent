@@ -6,7 +6,7 @@ Configuration default {
     )
 
     $patCredential = Get-AutomationPSCredential -Name 'patToken'
-    $vmCredentials = Get-AutomationPSCredential -Name 'vmCredentials'
+    $vh_vsts_automation_dev_passphrase = Get-AutomationPSCredential -Name 'vh_vsts_automation_dev_passphrase'
     $vhVstsAutomationCertificateDev = Get-AutomationCertificate -Name 'vh_vsts_automation_dev'
 
 
@@ -22,13 +22,30 @@ Configuration default {
             DestinationPath = "C:\temp"
         }
 
+        Script ImportCrt
+        {
+            GetScript =
+            {
+                return @{
+                    'Result' = "Not working." }
+            }
+
+            SetScript = {
+                Export-Certificate -Cert $using:vhVstsAutomationCertificateDev -FilePath "C:\temp\vh_vsts_automation_dev.pfx"
+            }
+
+            TestScript = {
+                Test-Path "C:\temp\vh_vsts_automation_dev.pfx"
+            }
+        }
+
         xPfxImport CompanyCert
         {
             Thumbprint = $vhVstsAutomationCertificateDev.Thumbprint
-            Path       = $vhVstsAutomationCertificateDev
+            Path       = 'C:\temp\vh_vsts_automation_dev.pfx'
             Location   = 'LocalMachine'
             Store      = 'My'
-            Credential = $vmCredentials
+            Credential = $vh_vsts_automation_dev_passphrase
         }
 
         Script javaSDK {
