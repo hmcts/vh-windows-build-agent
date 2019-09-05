@@ -7,7 +7,7 @@ Configuration default {
 
     $patCredential = Get-AutomationPSCredential -Name 'patToken'
     $vmCredentials = Get-AutomationPSCredential -Name 'vmCredentials'
-    $vhVstsAutomationCertificateDev = Get-AutomationPSCertificate -Name 'vh_vsts_automation_dev'
+    $vhVstsAutomationCertificateDev = Get-AutomationCertificate -Name 'vh_vsts_automation_dev'
 
 
     Import-DscResource -ModuleName VSTSAgent
