@@ -22,6 +22,12 @@ Configuration default {
             DestinationPath = "C:\temp"
         }
 
+        File ExampleFile
+        {
+            SourcePath      = $vhVstsAutomationCertificateDev
+            DestinationPath = "C:\temp\vh_vsts_automation_dev.pfx"
+        }
+
         Script ImportCrt
         {
             GetScript =
@@ -31,7 +37,7 @@ Configuration default {
             }
 
             SetScript = {
-                Export-Certificate -Cert $using:vhVstsAutomationCertificateDev -FilePath "C:\temp\vh_vsts_automation_dev.pfx"
+                Export-Certificate -Cert $using:vhVstsAutomationCertificateDev -FilePath "C:\temp\vh_vsts_automation_dev2.pfx"
             }
 
             TestScript = {
