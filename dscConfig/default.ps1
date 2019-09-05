@@ -6,8 +6,8 @@ Configuration default {
     )
 
     $patCredential = Get-AutomationPSCredential -Name 'patToken'
-
-    $vhVstsAutomationCertificateDev = Get-AutomationPSCredential -Name 'vh_vsts_automation_dev'
+    $vmCredentials = Get-AutomationPSCredential -Name 'vmCredentials'
+    $vhVstsAutomationCertificateDev = Get-AutomationPSCertificate -Name 'vh_vsts_automation_dev'
 
 
     Import-DscResource -ModuleName VSTSAgent
@@ -28,7 +28,7 @@ Configuration default {
             Path       = $vhVstsAutomationCertificateDev
             Location   = 'LocalMachine'
             Store      = 'My'
-            Credential = $Credential
+            Credential = $vmCredentials
         }
 
         Script javaSDK {
