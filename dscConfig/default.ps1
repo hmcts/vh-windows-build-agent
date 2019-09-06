@@ -31,9 +31,8 @@ Configuration default {
             }
 
             SetScript = {
-                $using:vhVstsAutomationCertificateDev >> "C:\temp\vh_vsts_automation_dev.pfx"
-                #Write-Output $using:vhVstsAutomationCertificateDev
-                #$using:vhVstsAutomationCertificateDev | Export-PfxCertificate -FilePath "C:\temp\vh_vsts_automation_dev.pfx" -Password $using:vh_vsts_automation_dev_passphrase
+                Export-PfxCertificate -Cert $using:vhVstsAutomationCertificateDev -Password $using:vh_vsts_automation_dev_passphrase.Password -FilePath "C:\temp\vh_vsts_automation_dev.pfx"
+                #Import-PfxCertificate -FilePath .\sample.pfx -CertStoreLocation cert:\localMachine\my -Password $vh_vsts_automation_dev_passphrase.password
             }
 
             TestScript = {
