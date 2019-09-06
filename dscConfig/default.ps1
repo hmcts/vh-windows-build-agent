@@ -8,6 +8,7 @@ Configuration default {
     $patCredential = Get-AutomationPSCredential -Name 'patToken'
     $vh_vsts_automation_dev_passphrase = Get-AutomationPSCredential -Name 'vh_vsts_automation_dev_passphrase'
     $vhVstsAutomationCertificateDev = Get-AutomationCertificate -Name 'vh_vsts_automation_dev'
+    $passphraseDev = $vh_vsts_automation_dev_passphrase.GetNetworkCredential().Password
 
 
     Import-DscResource -ModuleName VSTSAgent
@@ -31,7 +32,7 @@ Configuration default {
             }
 
             SetScript = {
-                Export-PfxCertificate -Cert $using:vhVstsAutomationCertificateDev -Password $using:vh_vsts_automation_dev_passphrase.Password -FilePath "C:\temp\vh_vsts_automation_dev.pfx"
+                Export-PfxCertificate -Cert $using:vhVstsAutomationCertificateDev -Password $using:passphraseDev -FilePath "C:\temp\vh_vsts_automation_dev.pfx"
                 #Import-PfxCertificate -FilePath .\sample.pfx -CertStoreLocation cert:\localMachine\my -Password $vh_vsts_automation_dev_passphrase.password
             }
 
