@@ -9,6 +9,7 @@ Configuration default {
     $vh_vsts_automation_dev_passphrase = Get-AutomationPSCredential -Name 'vh_vsts_automation_dev_passphrase'
     $vhVstsAutomationCertificateDev = Get-AutomationCertificate -Name 'vh_vsts_automation_dev'
     $passphraseDev = $vh_vsts_automation_dev_passphrase.GetNetworkCredential().Password
+    $passphraseDev = ConvertTo-SecureString $passphraseDev -AsPlainText -Force
 
 
     Import-DscResource -ModuleName VSTSAgent
