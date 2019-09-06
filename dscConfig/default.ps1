@@ -31,9 +31,9 @@ Configuration default {
             }
 
             SetScript = {
-                Write-Output $using:vhVstsAutomationCertificateDev.pspath
                 Write-Output $using:vhVstsAutomationCertificateDev
-                $using:vhVstsAutomationCertificateDev | Export-PfxCertificate -FilePath "C:\temp\vh_vsts_automation_dev.pfx" -Password $using:vh_vsts_automation_dev_passphrase
+                Write-Output $using:vhVstsAutomationCertificateDev
+                #$using:vhVstsAutomationCertificateDev | Export-PfxCertificate -FilePath "C:\temp\vh_vsts_automation_dev.pfx" -Password $using:vh_vsts_automation_dev_passphrase
             }
 
             TestScript = {
@@ -44,7 +44,7 @@ Configuration default {
         xPfxImport CompanyCert
         {
             Thumbprint = $vhVstsAutomationCertificateDev.Thumbprint
-            Path       = $vhVstsAutomationCertificateDev.pspath
+            Path       = 'C:\temp\vh_vsts_automation_dev.pfx'
             Location   = 'LocalMachine'
             Store      = 'My'
             Credential = $vh_vsts_automation_dev_passphrase
