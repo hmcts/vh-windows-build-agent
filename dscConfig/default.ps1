@@ -33,7 +33,8 @@ Configuration default {
             }
 
             SetScript = {
-                Export-PfxCertificate -Cert $using:vhVstsAutomationCertificateDev -Password $using:passphraseDev -FilePath "C:\temp\vh_vsts_automation_dev.pfx"
+                $passphraseDevSecureString = ConvertTo-SecureString $using:passphraseDev -AsPlainText -Force
+                Export-PfxCertificate -Cert $using:vhVstsAutomationCertificateDev -Password $passphraseDevSecureString -FilePath "C:\temp\vh_vsts_automation_dev.pfx"
                 #Import-PfxCertificate -FilePath .\sample.pfx -CertStoreLocation cert:\localMachine\my -Password $vh_vsts_automation_dev_passphrase.password
             }
 
