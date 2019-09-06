@@ -7,11 +7,6 @@ Configuration default {
 
     $patCredential = Get-AutomationPSCredential -Name 'patToken'
 
-    $vh_vsts_automation_dev_passphrase = Get-AutomationPSCredential -Name 'vh_vsts_automation_dev_passphrase'
-    $vhVstsAutomationCertificateDev = Get-AutomationCertificate -Name 'vh_vsts_automation_dev'
-    $passphraseDev = $vh_vsts_automation_dev_passphrase.GetNetworkCredential().Password
-    #$passphraseDev = ConvertTo-SecureString $passphraseDev -AsPlainText -Force
-
     Import-DscResource -ModuleName VSTSAgent
     Import-DscResource -ModuleName xCertificate
 
@@ -22,34 +17,6 @@ Configuration default {
             Ensure          = "Present" # Ensure the directory is Present on the target node.
             Type            = "Directory" # The default is File.
             DestinationPath = "C:\temp"
-        }
-
-        Script ImportCrt
-        {
-            GetScript =
-            {
-                return @{
-                    'Result' = "Not working." }
-            }
-
-            SetScript = {
-                $passphraseDevSecureString = ConvertTo-SecureString $using:passphraseDev -AsPlainText -Force
-                Export-PfxCertificate -Cert $using:vhVstsAutomationCertificateDev -Password $passphraseDevSecureString -FilePath "C:\temp\vh_vsts_automation_dev.pfx"
-                #Import-PfxCertificate -FilePath .\sample.pfx -CertStoreLocation cert:\localMachine\my -Password $vh_vsts_automation_dev_passphrase.password
-            }
-
-            TestScript = {
-                Test-Path "C:\temp\vh_vsts_automation_dev.pfx"
-            }
-        }
-
-        xPfxImport CompanyCert
-        {
-            Thumbprint = $vhVstsAutomationCertificateDev.Thumbprint
-            Path       = 'C:\temp\vh_vsts_automation_dev.pfx'
-            Location   = 'LocalMachine'
-            Store      = 'My'
-            Credential = $vh_vsts_automation_dev_passphrase
         }
 
         Script javaSDK {
