@@ -44,7 +44,7 @@ Configuration default {
         xPfxImport CompanyCert
         {
             Thumbprint = $vhVstsAutomationCertificateDev.Thumbprint
-            Path       = 'C:\temp\vh_vsts_automation_dev.pfx'
+            Path       = $vhVstsAutomationCertificateDev.pspath
             Location   = 'LocalMachine'
             Store      = 'My'
             Credential = $vh_vsts_automation_dev_passphrase
