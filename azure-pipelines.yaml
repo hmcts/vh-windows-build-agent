@@ -11,7 +11,7 @@ pr:
   autoCancel: true
   branches:
     include:
-      - features/*
+      - master
 
 variables:
   - group: vh-infra-dev
