@@ -100,7 +100,7 @@ stages:
       - Plan_Prod_Environments
       - Deploy_Test_Environments
     jobs:
-      - template: terraform-deployment.yml
+      - template: pipeline/terraform-deployment.yml
         parameters:
           pool: $(vmPool)
           pat_token: $(pat_token)
