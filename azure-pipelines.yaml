@@ -50,6 +50,7 @@ stages:
 
           pat_token: $(pat_token)
           agent_pool: $(agent_pool_dev)
+          identities: $(infra_identities_dev)
     
   - stage: Plan_Prod_Environments
     condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
@@ -77,6 +78,7 @@ stages:
 
           pat_token: $(pat_token)
           agent_pool: $(agent_pool_pilot)
+          identities: $(infra_identities_pilot)
 
   - stage: Deploy_Test_Environments
     dependsOn: Plan_Test_Environments
@@ -111,4 +113,4 @@ stages:
               storageAccount: $(infra_storage_account_pilot)
               armServiceConnection: $(infra_arm_service_connection_pilot)
               deploymentBranch: refs/heads/master
-              identities: $(infra_identities_dev)
+              identities: $(infra_identities_pilot)
