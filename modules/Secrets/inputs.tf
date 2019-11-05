@@ -11,5 +11,5 @@ variable "secrets" {
 }
 
 variable "delegated_networks" {
-  type = map(string)
+  type = list(string)
 }

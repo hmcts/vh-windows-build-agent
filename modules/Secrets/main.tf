@@ -49,7 +49,7 @@ resource "azurerm_key_vault" "secrets" {
     bypass         = "None"
     ip_rules = [
     ]
-    virtual_network_subnet_ids = values(var.delegated_networks)
+    virtual_network_subnet_ids = var.delegated_networks
   }
 }
 

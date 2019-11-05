@@ -27,7 +27,15 @@ resource "azurerm_virtual_network" "buildagent" {
   resource_group_name = azurerm_resource_group.buildagent.name
   location            = azurerm_resource_group.buildagent.location
 
-  address_space = ["10.254.0.252/30"]
+  address_space = ["10.254.0.252/29"]
+}
+
+resource "azurerm_subnet" "buildagent" {
+  name                 = "${local.std_prefix}${local.suffix}"
+  resource_group_name  = azurerm_resource_group.buildagent.name
+  virtual_network_name = azurerm_virtual_network.buildagent.name
+
+  address_prefix = cidrsubnet(azurerm_virtual_network.buildagent.address_space[0], 0, 0)
 
   service_endpoints = [
     "Microsoft.Web",
@@ -35,14 +43,6 @@ resource "azurerm_virtual_network" "buildagent" {
     "Microsoft.Storage",
     "Microsoft.Sql"
   ]
-}
-
-resource "azurerm_subnet" "buildagent" {
-  name                 = "AzureDevopsSubnet_Win"
-  resource_group_name  = azurerm_resource_group.buildagent.name
-  virtual_network_name = azurerm_virtual_network.buildagent.name
-
-  address_prefix = cidrsubnet(azurerm_virtual_network.buildagent.address_space[0], 3, 0)
 }
 
 resource "azurerm_public_ip" "buildagent" {
@@ -73,7 +73,7 @@ resource "azurerm_network_interface" "buildagent" {
 }
 
 resource "azurerm_storage_account" "buildagent" {
-  name                = "${local.std_prefix}${local.suffix}"
+  name                = replace("${local.std_prefix}${local.suffix}","-","")
   resource_group_name = azurerm_resource_group.buildagent.name
   location            = azurerm_resource_group.buildagent.location
 
@@ -87,21 +87,19 @@ resource "azurerm_storage_account" "buildagent" {
 
   network_rules {
     default_action             = "deny"
-    bypass                     = "None"
+    bypass                     = ["None"]
     virtual_network_subnet_ids = [var.build_agent_vnet, azurerm_subnet.buildagent.id]
   }
 }
 
 resource "azurerm_storage_container" "scripts" {
   name                  = "scripts"
-  resource_group_name   = azurerm_resource_group.buildagent.name
   storage_account_name  = azurerm_storage_account.buildagent.name
   container_access_type = "private"
 }
 
 resource "azurerm_storage_blob" "deployment_script" {
   name                   = "Prepare-BuildAgent.ps1"
-  resource_group_name    = azurerm_resource_group.buildagent.name
   storage_account_name   = azurerm_storage_account.buildagent.name
   storage_container_name = azurerm_storage_container.scripts.name
   type                   = "Block"
@@ -121,7 +119,7 @@ resource "random_password" "password" {
 module Secrets {
   source = "./modules/Secrets"
 
-  resource_group_name = "${local.std_prefix}${local.suffix}"
+  resource_group_name = azurerm_resource_group.buildagent.name
   resource_prefix     = "${local.std_prefix}${local.suffix}"
   secrets = {
     username = random_password.username.result
@@ -173,13 +171,13 @@ resource "azurerm_virtual_machine" "buildagent" {
 
   identity {
     type         = "UserAssigned"
-    identity_ids = concat([var.identites],[module.Secrets.kv_managed_account.id])
+    identity_ids = concat(var.identities, [module.Secrets.kv_managed_identity.id])
   }
 }
 
 locals {
   deployment_command = "powershell.exe -ExecutionPolicy Unrestricted -File ./${azurerm_storage_blob.deployment_script.name}"
-  deployment_params  = "-DevOpsUrl ${var.azdevops_url} -PAT ${azdevops_pat} -AgentPool ${azdevops_agentpool} -AgentName ${local.std_prefix}${local.suffix} -InstanceCount ${azdevops_agent_count}"
+  deployment_params  = "-DevOpsUrl ${var.azdevops_url} -PAT ${var.azdevops_pat} -AgentPool ${var.azdevops_agentpool} -AgentName ${local.std_prefix}${local.suffix} -InstanceCount ${var.azdevops_agent_count}"
 }
 
 resource "azurerm_virtual_machine_extension" "azuredevopsvmex" {
@@ -196,7 +194,7 @@ resource "azurerm_virtual_machine_extension" "azuredevopsvmex" {
   "storageAccountName": "${azurerm_storage_account.buildagent.name}",
   "storageAccountKey": "${azurerm_storage_account.buildagent.primary_access_key}",
   "fileUris": ["${azurerm_storage_blob.deployment_script.url}"],
-  "commandToExecute": "${local.deployment_command} ${local.deplyoyment}",
+  "commandToExecute": "${local.deployment_command} ${local.deployment_params}",
   "timestamp" : "12"
   }
 PROTECTED_SETTINGS

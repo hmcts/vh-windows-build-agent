@@ -30,7 +30,7 @@ steps:
       azureSubscription: ${{ parameters.armServiceConnection }}
       scriptType: pscore
       scriptLocation: inlineScript
-      failOnStandardError: true
+      failOnStandardError: false
       inlineScript: |
         $tfFolder = Join-Path "${{ parameters.workingDirectory }}" ".terraform"
         if(test-path $tfFolder) {
