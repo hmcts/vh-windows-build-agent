@@ -88,7 +88,7 @@ resource "azurerm_storage_account" "buildagent" {
   network_rules {
     default_action             = "deny"
     bypass                     = "None"
-    virtual_network_subnet_ids = [azurerm_subnet.buildagent.id]
+    virtual_network_subnet_ids = [var.build_agent_vnet, azurerm_subnet.buildagent.id]
   }
 }
 
@@ -118,6 +118,18 @@ resource "random_password" "password" {
   special = true
 }
 
+module Secrets {
+  source = "./modules/Secrets"
+
+  resource_group_name = "${local.std_prefix}${local.suffix}"
+  resource_prefix     = "${local.std_prefix}${local.suffix}"
+  secrets = {
+    username = random_password.username.result
+    password = random_password.password.result
+  }
+  delegated_networks = [var.build_agent_vnet, azurerm_subnet.buildagent.id]
+}
+
 resource "azurerm_virtual_machine" "buildagent" {
   name                = "${local.std_prefix}${local.suffix}"
   location            = azurerm_resource_group.buildagent.location
@@ -144,8 +156,8 @@ resource "azurerm_virtual_machine" "buildagent" {
 
   os_profile {
     computer_name  = "${local.std_prefix}${local.suffix}"
-    admin_username = random_password.username
-    admin_password = random_password.password
+    admin_username = random_password.username.result
+    admin_password = random_password.password.result
   }
 
   os_profile_windows_config {
@@ -161,7 +173,7 @@ resource "azurerm_virtual_machine" "buildagent" {
 
   identity {
     type         = "UserAssigned"
-    identity_ids = var.identites
+    identity_ids = concat([var.identites],[module.Secrets.kv_managed_account.id])
   }
 }
 
