@@ -1,0 +1,28 @@
+parameters:
+  pool:
+  environments: []
+  jobs: []
+  pat_token: ""
+  agent_pool: ""
+
+jobs:
+- ${{ each deployment in parameters.environments }}:
+  - deployment: Core_Infra_${{ deployment.name }}
+
+    pool:
+      name: ${{ parameters.pool }}
+
+    condition: startsWith(variables['Build.SourceBranch'], '${{ deployment.deploymentBranch }}')
+    environment: ${{ deployment.name }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - template: terraform-deploy.yml
+            parameters:
+              storageAccount: ${{ deployment.storageAccount }}
+              environment: ${{ deployment.name }}
+              armServiceConnection: ${{ deployment.armServiceConnection }}
+              identities: ${{ deployment.identities }}
+              pat_token: ${{ parameters.pat_token }}
+              agent_pool: ${{ parameters.agent_pool }}
