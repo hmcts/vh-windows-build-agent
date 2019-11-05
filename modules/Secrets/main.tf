@@ -26,20 +26,51 @@ resource "azurerm_key_vault" "secrets" {
     object_id = azurerm_user_assigned_identity.kvuser.principal_id
 
     certificate_permissions = [
+      "backup",
+      "create",
+      "delete",
+      "deleteissuers",
       "get",
+      "getissuers",
+      "import",
       "list",
-      "set"
+      "listissuers",
+      "managecontacts",
+      "manageissuers",
+      "purge",
+      "recover",
+      "restore",
+      "setissuers",
+      "update"
     ]
 
     key_permissions = [
+      "backup",
+      "create",
+      "decrypt",
+      "delete",
+      "encrypt",
       "get",
+      "import",
       "list",
-      "set"
+      "purge",
+      "recover",
+      "restore",
+      "sign",
+      "unwrapKey",
+      "update",
+      "verify",
+      "wrapKey"
     ]
 
     secret_permissions = [
+      "backup",
+      "delete",
       "get",
       "list",
+      "purge",
+      "recover",
+      "restore",
       "set"
     ]
   }
