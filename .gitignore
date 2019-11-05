@@ -8,7 +8,6 @@
 *.user
 *.userosscache
 *.sln.docstates
-AAD_Variables.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -329,3 +328,11 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+.terraform
+backend-*.tfvars
+*.auto.tfvars.json
+*.toimport
+import.ps1
+
+.ionide

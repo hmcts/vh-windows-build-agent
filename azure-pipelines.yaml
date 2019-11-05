@@ -1,0 +1,114 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - master
+  tags:
+    include:
+      - v*
+
+pr:
+  autoCancel: true
+  branches:
+    include:
+      - features/*
+
+variables:
+  - group: vh-infra-dev
+  - group: vh-infra-pilot
+  - group: az-devops-auth
+  - name: vmPool
+    value: Azure-VSTS-VS2017
+  - name: agent_pool_dev
+    value: vh-vsts-agent-dev
+  - name: agent_pool_pilot
+    value: vh-vsts-agent-pilot
+
+stages:
+  - stage: Plan_Test_Environments
+    jobs:
+    - job: Dev_Plan
+      pool:
+          name: $(vmPool)
+
+      variables:
+        - group: vh-infra-dev
+
+      strategy:
+        maxParallel: 3
+        matrix:
+          Dev:
+            environment: Dev
+
+      steps:
+      - template: pipeline/terraform-plan.yml
+        parameters:
+          storageAccount: $(infra_storage_account_dev)
+          environment: $(environment)
+
+          armServiceConnection: $(infra_arm_service_connection_dev)
+
+          pat_token: $(pat_token)
+          agent_pool: $(agent_pool_dev)
+    
+  - stage: Plan_Prod_Environments
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    jobs:
+    - job: Pilot_Plan
+      pool:
+          name: $(vmPool)
+
+      variables:
+        - group: vh-infra-pilot
+        
+      strategy:
+        maxParallel: 3
+        matrix:
+          Prod:
+            environment: Prod
+
+      steps:
+      - template: pipeline/terraform-plan.yml
+        parameters:
+          storageAccount: $(infra_storage_account_pilot)
+          environment: $(environment)
+
+          armServiceConnection: $(infra_arm_service_connection_pilot)
+
+          pat_token: $(pat_token)
+          agent_pool: $(agent_pool_pilot)
+
+  - stage: Deploy_Test_Environments
+    dependsOn: Plan_Test_Environments
+    jobs:
+      - template: pipeline/terraform-deployment.yml
+        parameters:
+          pool: $(vmPool)
+          pat_token: $(pat_token)
+          agent_pool: $(agent_pool_dev)
+
+          environments:
+            - name: Dev
+              storageAccount: $(infra_storage_account_dev)
+              armServiceConnection: $(infra_arm_service_connection_dev)
+              deploymentBranch: refs/heads/master
+              identities: $(infra_identities_dev)
+
+  - stage: Deploy_Prod_Environments
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+    dependsOn:
+      - Plan_Prod_Environments
+      - Deploy_Test_Environments
+    jobs:
+      - template: terraform-deployment.yml
+        parameters:
+          pool: $(vmPool)
+          pat_token: $(pat_token)
+          agent_pool: $(agent_pool_pilot)
+
+          environments:
+            - name: Prod
+              storageAccount: $(infra_storage_account_pilot)
+              armServiceConnection: $(infra_arm_service_connection_pilot)
+              deploymentBranch: refs/heads/master
+              identities: $(infra_identities_dev)

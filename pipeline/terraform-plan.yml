@@ -1,0 +1,56 @@
+parameters:
+  workingDirectory: $(system.defaultWorkingDirectory)
+  storageAccount: ""
+  armServiceConnection: ""
+  identities: ""
+  pat_token: ""
+  agent_pool: ""
+  environment: ""
+
+steps:
+  - script: |
+      terraform --version
+      terraform init -backend=false -reconfigure
+      terraform validate
+    workingDirectory: ${{ parameters.workingDirectory }}
+    displayName: "Terraform validate"
+    condition: succeeded()
+
+  - template: terraform-loginprep.yml
+    parameters:
+      storageAccount: ${{ parameters.storageAccount }}
+      armServiceConnection: ${{ parameters.armServiceConnection }}
+      dnsServiceConnection: ${{ parameters.dnsServiceConnection }}
+      identities: ${{ parameters.identities }}
+      pat_token: ${{ parameters.pat_token }}
+      agent_pool: ${{ parameters.agent_pool }}
+
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: ${{ parameters.armServiceConnection }}
+      scriptType: pscore
+      scriptLocation: inlineScript
+      failOnStandardError: true
+      inlineScript: |
+        $tfFolder = Join-Path "${{ parameters.workingDirectory }}" ".terraform"
+        if(test-path $tfFolder) {
+          Remove-Item $tfFolder -Force -Recurse
+        }
+
+        $tfPlan = Join-Path "${{ parameters.workingDirectory }}" "plan.tfplan"
+        if(test-path $tfPlan) {
+          Remove-Item $tfPlan -Force
+        }
+
+        terraform init -backend-config="storage_account_name=${{ parameters.storageAccount }}" -reconfigure
+        terraform workspace select ${{ parameters.environment }}
+        terraform plan -out="plan.tfplan" -input=false
+      workingDirectory: ${{ parameters.workingDirectory }}
+    displayName: Terraform plan
+    condition: succeeded()
+  
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Terraform Plan'
+    inputs:
+      targetPath: '${{ parameters.workingDirectory }}/plan.tfplan'
+      artifact: tfplan-${{ parameters.environment }}
