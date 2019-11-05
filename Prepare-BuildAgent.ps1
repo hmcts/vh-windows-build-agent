@@ -28,6 +28,7 @@ param (
 begin {
     $env:VSTS_AGENT_HTTPTRACE = $true
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    $ConfirmPreference = "None"
 
     Start-Transcript
 
@@ -57,7 +58,7 @@ process {
     ForEach-Object (1..$InstanceCount) {
         $CurrentAgentFolder = Join-Path $AgentPath $_
         if (Test-Path $CurrentAgentFolder) {
-            Remove-Item -Path $CurrentAgentFolder -Force -Confirm:$false -Recurse
+            Remove-Item -Path $CurrentAgentFolder -Force -Recurse
         }
 
         New-Item -ItemType Directory -Force -Path $CurrentAgentFolder | Out-Null
