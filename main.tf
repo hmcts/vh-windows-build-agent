@@ -129,7 +129,7 @@ module Secrets {
 }
 
 resource "azurerm_virtual_machine" "buildagent" {
-  name                = replace("${local.std_prefix}${local.suffix}","-","")
+  name                = "${local.std_prefix}${local.suffix}"
   location            = azurerm_resource_group.buildagent.location
   resource_group_name = azurerm_resource_group.buildagent.name
 
@@ -153,7 +153,7 @@ resource "azurerm_virtual_machine" "buildagent" {
   }
 
   os_profile {
-    computer_name  = "${local.std_prefix}${local.suffix}"
+    computer_name  = replace("${local.std_prefix}${local.suffix}","-","")
     admin_username = random_password.username.result
     admin_password = random_password.password.result
   }
