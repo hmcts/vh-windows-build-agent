@@ -27,7 +27,7 @@ resource "azurerm_virtual_network" "buildagent" {
   resource_group_name = azurerm_resource_group.buildagent.name
   location            = azurerm_resource_group.buildagent.location
 
-  address_space = ["10.254.0.252/29"]
+  address_space = ["10.254.0.248/29"]
 }
 
 resource "azurerm_subnet" "buildagent" {
