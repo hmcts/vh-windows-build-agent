@@ -116,5 +116,5 @@ stages:
             - name: Prod
               storageAccount: $(infra_storage_account_pilot)
               armServiceConnection: $(infra_arm_service_connection_pilot)
-              deploymentBranch: refs/heads/master
+              deploymentBranch: refs/tags/
               identities: $(infra_identities_pilot)
