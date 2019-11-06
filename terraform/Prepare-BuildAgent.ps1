@@ -92,6 +92,13 @@ end {
         Write-Verbose "Extracting LCOW to $Env:ProgramFiles\Linux Containers\."
         Expand-Archive $LCOWArchive -DestinationPath "$Env:ProgramFiles\Linux Containers\."
 
+        $PipeAcl = [System.IO.Directory]::GetAccessControl('\\.\pipe\docker_engine')
+        $PipeAccessRule = New-Object -TypeName System.Security.AccessControl.FileSystemAccessRule("Network Service", 'FullControl', 'Allow')
+        $null = $PipeAcl.AddAccessRule($PipeAccessRule)
+        [System.IO.Directory]::SetAccessControl('\\.\pipe\docker_engine', $PipeAcl)
+
+        docker image prune
+
         Restart-Computer -Force
     }
 
