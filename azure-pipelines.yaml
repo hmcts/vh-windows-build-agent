@@ -51,7 +51,7 @@ stages:
           pat_token: $(pat_token)
           agent_pool: $(agent_pool_dev)
           identities: $(infra_identities_dev)
-    
+
   - stage: Plan_Prod_Environments
     condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     jobs:
@@ -61,7 +61,7 @@ stages:
 
       variables:
         - group: vh-infra-pilot
-        
+
       strategy:
         maxParallel: 3
         matrix:
