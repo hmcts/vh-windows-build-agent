@@ -43,7 +43,7 @@ stages:
       steps:
       - template: pipeline/terraform-plan.yml
         parameters:
-          workingDirectory: $(system.defaultWorkingDirectory)/terraform
+          workingDirectory: $(Build.SourcesDirectory)/terraform
           storageAccount: $(infra_storage_account_dev)
           environment: $(environment)
 
@@ -72,7 +72,7 @@ stages:
       steps:
       - template: pipeline/terraform-plan.yml
         parameters:
-          workingDirectory: $(system.defaultWorkingDirectory)/terraform
+          workingDirectory: $(Build.SourcesDirectory)/terraform
           storageAccount: $(infra_storage_account_pilot)
           environment: $(environment)
 
@@ -87,7 +87,7 @@ stages:
     jobs:
       - template: pipeline/terraform-deployment.yml
         parameters:
-          workingDirectory: $(system.defaultWorkingDirectory)/terraform
+          workingDirectory: $(Build.SourcesDirectory)/terraform
           pool: $(vmPool)
           pat_token: $(pat_token)
           agent_pool: $(agent_pool_dev)
@@ -107,7 +107,7 @@ stages:
     jobs:
       - template: pipeline/terraform-deployment.yml
         parameters:
-          workingDirectory: $(system.defaultWorkingDirectory)/terraform
+          workingDirectory: $(Build.SourcesDirectory)/terraform
           pool: $(vmPool)
           pat_token: $(pat_token)
           agent_pool: $(agent_pool_pilot)
