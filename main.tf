@@ -129,7 +129,7 @@ module Secrets {
 }
 
 resource "azurerm_virtual_machine" "buildagent" {
-  name                = "${local.std_prefix}${local.suffix}"
+  name                = replace("${local.std_prefix}${local.suffix}","-","")
   location            = azurerm_resource_group.buildagent.location
   resource_group_name = azurerm_resource_group.buildagent.name
 
