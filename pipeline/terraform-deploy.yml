@@ -20,6 +20,12 @@ steps:
     inputs:
       artifactName: tfplan-${{ parameters.environment }}
 
+  - task: DownloadPipelineArtifact@2
+    displayName: Download Terraform Plan
+    inputs:
+      artifactName: tfplan-${{ parameters.environment }}
+      targetPath: ${{ parameters.workingDirectory }}
+
   - task: AzureCLI@2
     inputs:
       azureSubscription: ${{ parameters.armServiceConnection }}
