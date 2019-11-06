@@ -86,7 +86,7 @@ resource "azurerm_storage_account" "buildagent" {
   enable_advanced_threat_protection = true
 
   network_rules {
-    default_action             = "deny"
+    default_action             = "Deny"
     bypass                     = ["None"]
     virtual_network_subnet_ids = [var.build_agent_vnet, azurerm_subnet.buildagent.id]
   }
