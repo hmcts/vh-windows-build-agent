@@ -36,7 +36,7 @@ variable "timezone" {
 
 variable "vm_size" {
   type    = string
-  default = "Standard_DS3_v2"
+  default = "Standard_D4s_v3"
 }
 
 variable "build_agent_vnet" {

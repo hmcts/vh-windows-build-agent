@@ -63,7 +63,7 @@ process {
 
         New-Item -ItemType Directory -Force -Path $CurrentAgentFolder | Out-Null
 
-        Write-Verbose "Extracting Agent Package to $CurrentAgentFolder" -Verbose
+        Write-Verbose "Extracting Agent Package to $CurrentAgentFolder"
         Expand-Archive -Path $AgentArchive -DestinationPath $CurrentAgentFolder
 
         Write-Verbose "Executing: $CurrentAgentFolder/config.cmd --unattended --url $DevOpsUrl --auth pat --token *** --pool `"$AgentPool`" --agent `"$AgentName $instance`" --acceptTeeEula --runAsService --replace"
@@ -73,5 +73,27 @@ process {
 }
 
 end {
+
+    if ($platform -eq "win-x64") {
+        [Environment]::SetEnvironmentVariable("LCOW_SUPPORTED", "1", "Machine")
+
+        $Config = @{ experimental = $true }
+        $config | ConvertTo-Json | Set-Content C:\ProgramData\docker\config\daemon.json -Encoding ascii -Force
+
+        Write-Verbose "Getting latest LCOW Release Manifest"
+        $LCOWMetaObject = (Invoke-RestMethod https://api.github.com/repos/linuxkit/lcow/releases) | Select-Object -First 1
+        Write-Verbose "Found LCOW version $($LCOWMetaObject.tag_name)"
+
+        Write-Verbose "Getting list of assets within the release"
+        $ReleaseAsset = Invoke-RestMethod $LCOWMetaObject.assets.where{ $_.name -eq "release.zip" }.browser_download_url
+
+        Invoke-WebRequest $ReleaseAsset -Out $AgentArchive
+
+        Write-Verbose "Extracting LCOW to $Env:ProgramFiles\Linux Containers\."
+        Expand-Archive $LCOWArchive -DestinationPath "$Env:ProgramFiles\Linux Containers\."
+
+        Restart-Computer -Force
+    }
+
     Stop-Transcript
 }
