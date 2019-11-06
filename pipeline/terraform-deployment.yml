@@ -19,6 +19,9 @@ jobs:
       runOnce:
         deploy:
           steps:
+          - checkout: self
+            clean: true
+            
           - template: terraform-deploy.yml
             parameters:
               workingDirectory: ${{ parameters.workingDirectory }}
