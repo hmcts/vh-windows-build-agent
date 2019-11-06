@@ -54,7 +54,7 @@ stages:
           identities: $(infra_identities_dev)
 
   - stage: Plan_Prod_Environments
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads')
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads')
     jobs:
     - job: Pilot_Plan
       pool:
