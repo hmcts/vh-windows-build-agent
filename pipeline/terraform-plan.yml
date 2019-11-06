@@ -33,18 +33,6 @@ steps:
       scriptLocation: inlineScript
       failOnStandardError: false
       inlineScript: |
-        $tfFolder = Join-Path "${{ parameters.workingDirectory }}" ".terraform"
-        if(test-path $tfFolder) {
-          Remove-Item $tfFolder -Force -Recurse
-        }
-
-        $tfPlan = Join-Path "${{ parameters.workingDirectory }}" "plan.tfplan"
-        if(test-path $tfPlan) {
-          Remove-Item $tfPlan -Force
-        }
-
-        terraform init -backend-config="storage_account_name=${{ parameters.storageAccount }}" -reconfigure
-        terraform workspace select ${{ parameters.environment }}
         terraform plan -out="plan.tfplan" -input=false
       workingDirectory: ${{ parameters.workingDirectory }}
     displayName: Terraform plan
