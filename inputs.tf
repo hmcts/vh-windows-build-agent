@@ -31,7 +31,7 @@ variable "azdevops_agent_count" {
 
 variable "timezone" {
   type    = string
-  default = "Central European Standard Time"
+  default = "GMT Standard Time"
 }
 
 variable "vm_size" {

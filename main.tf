@@ -104,6 +104,9 @@ resource "azurerm_storage_blob" "deployment_script" {
   storage_container_name = azurerm_storage_container.scripts.name
   type                   = "Block"
   source                 = "Prepare-BuildAgent.ps1"
+  metadata = {
+    md5 = filemd5("Prepare-BuildAgent.ps1")
+  }
 }
 
 resource "random_password" "username" {
