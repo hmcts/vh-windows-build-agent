@@ -25,6 +25,7 @@ steps:
       identities: ${{ parameters.identities }}
       pat_token: ${{ parameters.pat_token }}
       agent_pool: ${{ parameters.agent_pool }}
+      environment: ${{ parameters.environment }}
 
   - task: AzureCLI@2
     inputs:

@@ -16,7 +16,8 @@ steps:
       identities: ${{ parameters.identities }}
       pat_token: ${{ parameters.pat_token }}
       agent_pool: ${{ parameters.agent_pool }}
-      
+      environment: ${{ parameters.environment }}
+
   - task: DownloadPipelineArtifact@2
     displayName: Download Terraform Plan
     inputs:

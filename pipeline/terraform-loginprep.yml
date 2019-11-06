@@ -5,6 +5,7 @@ parameters:
   identities: ""
   pat_token: ""
   agent_pool: ""
+  environment: ""
 
 steps:
   - task: AzureCLI@2
