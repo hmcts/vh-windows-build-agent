@@ -57,7 +57,6 @@ stages:
           identities: $(infra_identities_dev)
 
   - stage: Plan_Prod_Environments
-    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads')
     jobs:
     - job: Pilot_Plan
       pool:
@@ -102,7 +101,7 @@ stages:
             - name: Dev
               storageAccount: $(infra_storage_account_dev)
               armServiceConnection: $(infra_arm_service_connection_dev)
-              deploymentBranch: refs/heads/
+              deploymentBranch: refs/heads/master
               identities: $(infra_identities_dev)
 
   - stage: Deploy_Prod_Environments
