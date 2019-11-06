@@ -31,12 +31,12 @@ variable "azdevops_agent_count" {
 
 variable "timezone" {
   type    = string
-  default = "Central European Standard Time"
+  default = "GMT Standard Time"
 }
 
 variable "vm_size" {
   type    = string
-  default = "Standard_DS3_v2"
+  default = "Standard_D4s_v3"
 }
 
 variable "build_agent_vnet" {
