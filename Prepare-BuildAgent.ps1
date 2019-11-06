@@ -55,8 +55,8 @@ begin {
 }
 
 process {
-    ForEach-Object -InputObject (1..$InstanceCount) {
-        $CurrentAgentFolder = Join-Path $AgentPath "$_"
+    foreach ($instance in 1..$InstanceCount) {
+        $CurrentAgentFolder = Join-Path $AgentPath "$instance"
         if (Test-Path $CurrentAgentFolder) {
             Remove-Item -Path $CurrentAgentFolder -Force -Recurse
         }
@@ -66,9 +66,9 @@ process {
         Write-Verbose "Extracting Agent Package to $CurrentAgentFolder" -Verbose
         Expand-Archive -Path $AgentArchive -DestinationPath $CurrentAgentFolder
 
-        Write-Verbose "Executing: $CurrentAgentFolder/config.cmd --unattended --url $DevOpsUrl --auth pat --token *** --pool `"$AgentPool`" --agent `"$AgentName $_`" --acceptTeeEula --runAsService --replace"
+        Write-Verbose "Executing: $CurrentAgentFolder/config.cmd --unattended --url $DevOpsUrl --auth pat --token *** --pool `"$AgentPool`" --agent `"$AgentName $instance`" --acceptTeeEula --runAsService --replace"
 
-        [scriptblock]::Create("$CurrentAgentFolder/config.cmd --unattended --url $DevOpsUrl --auth pat --token $PAT --pool `"$AgentPool`" --agent `"$AgentName $_`" --acceptTeeEula --runAsService --replace").invoke()
+        [scriptblock]::Create("$CurrentAgentFolder/config.cmd --unattended --url $DevOpsUrl --auth pat --token $PAT --pool `"$AgentPool`" --agent `"$AgentName $instance`" --acceptTeeEula --runAsService --replace").invoke()
     }
 }
 
