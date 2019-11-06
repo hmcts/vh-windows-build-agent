@@ -55,17 +55,20 @@ begin {
 }
 
 process {
-    ForEach-Object (1..$InstanceCount) {
-        $CurrentAgentFolder = Join-Path $AgentPath $_
+    ForEach-Object -InputObject (1..$InstanceCount) {
+        $CurrentAgentFolder = Join-Path $AgentPath "$_"
         if (Test-Path $CurrentAgentFolder) {
             Remove-Item -Path $CurrentAgentFolder -Force -Recurse
         }
 
         New-Item -ItemType Directory -Force -Path $CurrentAgentFolder | Out-Null
 
+        Write-Verbose "Extracting Agent Package to $CurrentAgentFolder" -Verbose
         Expand-Archive -Path $AgentArchive -DestinationPath $CurrentAgentFolder
 
-        ./config.cmd --unattended --url $DevOpsUrl --auth pat --token "$PAT" --pool "$AgentPool" --agent "$AgentName $_" --acceptTeeEula --runAsService --replace
+        Write-Verbose "Executing: $CurrentAgentFolder/config.cmd --unattended --url $DevOpsUrl --auth pat --token *** --pool `"$AgentPool`" --agent `"$AgentName $_`" --acceptTeeEula --runAsService --replace"
+
+        [scriptblock]::Create("$CurrentAgentFolder/config.cmd --unattended --url $DevOpsUrl --auth pat --token $PAT --pool `"$AgentPool`" --agent `"$AgentName $_`" --acceptTeeEula --runAsService --replace").invoke()
     }
 }
 
