@@ -1,4 +1,5 @@
 parameters:
+  workingDirectory: $(system.defaultWorkingDirectory)
   storageAccount: ""
   armServiceConnection: ""
   identities: ""
@@ -9,6 +10,7 @@ parameters:
 steps:
   - template: terraform-loginprep.yml
     parameters:
+      workingDirectory: ${{ parameters.workingDirectory }}
       storageAccount: ${{ parameters.storageAccount }}
       armServiceConnection: ${{ parameters.armServiceConnection }}
       identities: ${{ parameters.identities }}
@@ -21,6 +23,7 @@ steps:
       scriptType: pscore
       scriptLocation: inlineScript
       failOnStandardError: true
+      workingDirectory: ${{ parameters.workingDirectory }}
       inlineScript: |
         terraform apply -auto-approve plan.tfplan
     displayName: Terraform apply
