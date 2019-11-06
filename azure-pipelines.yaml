@@ -41,6 +41,9 @@ stages:
             environment: Dev
 
       steps:
+      - checkout: self
+        clean: true
+
       - template: pipeline/terraform-plan.yml
         parameters:
           workingDirectory: $(Build.SourcesDirectory)/terraform
@@ -70,6 +73,9 @@ stages:
             environment: Prod
 
       steps:
+      - checkout: self
+        clean: true
+        
       - template: pipeline/terraform-plan.yml
         parameters:
           workingDirectory: $(Build.SourcesDirectory)/terraform
