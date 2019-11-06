@@ -18,6 +18,7 @@ steps:
 
   - template: terraform-loginprep.yml
     parameters:
+      workingDirectory: ${{ parameters.workingDirectory }}
       storageAccount: ${{ parameters.storageAccount }}
       armServiceConnection: ${{ parameters.armServiceConnection }}
       dnsServiceConnection: ${{ parameters.dnsServiceConnection }}

@@ -104,6 +104,9 @@ resource "azurerm_storage_blob" "deployment_script" {
   storage_container_name = azurerm_storage_container.scripts.name
   type                   = "Block"
   source                 = "Prepare-BuildAgent.ps1"
+  metadata = {
+    md5 = filemd5("Prepare-BuildAgent.ps1")
+  }
 }
 
 resource "random_password" "username" {
@@ -153,7 +156,7 @@ resource "azurerm_virtual_machine" "buildagent" {
   }
 
   os_profile {
-    computer_name  = "${local.std_prefix}${local.suffix}"
+    computer_name  = replace("${local.std_prefix}${local.suffix}","-","")
     admin_username = random_password.username.result
     admin_password = random_password.password.result
   }
@@ -176,7 +179,7 @@ resource "azurerm_virtual_machine" "buildagent" {
 }
 
 locals {
-  deployment_command = "powershell.exe -ExecutionPolicy Unrestricted -File ./${azurerm_storage_blob.deployment_script.name}"
+  deployment_command = "powershell.exe -ExecutionPolicy Unrestricted -File ./${azurerm_storage_blob.deployment_script.name} -verbose"
   deployment_params  = "-DevOpsUrl ${var.azdevops_url} -PAT ${var.azdevops_pat} -AgentPool ${var.azdevops_agentpool} -AgentName ${local.std_prefix}${local.suffix} -InstanceCount ${var.azdevops_agent_count}"
 }
 

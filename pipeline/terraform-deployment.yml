@@ -1,4 +1,5 @@
 parameters:
+  workingDirectory: $(system.defaultWorkingDirectory)
   pool:
   environments: []
   jobs: []

@@ -1,4 +1,5 @@
 parameters:
+  workingDirectory: $(system.defaultWorkingDirectory)
   storageAccount: ""
   armServiceConnection: ""
   identities: ""
@@ -12,6 +13,7 @@ steps:
       scriptType: pscore
       scriptLocation: inlineScript
       AddSpnToEnvironment: true
+      workingDirectory: ${{ parameters.workingDirectory }}
       inlineScript: |
         echo "##vso[task.setvariable variable=ARM_CLIENT_ID]$env:servicePrincipalId"
         echo "##vso[task.setvariable variable=ARM_CLIENT_SECRET]$env:servicePrincipalKey"
@@ -29,6 +31,7 @@ steps:
         azdevops_pat = $env:pat_token
         azdevops_agentpool = $env:agent_pool
       } | ConvertTo-Json | Set-Content params.auto.tfvars.json -force
+    workingDirectory: ${{ parameters.workingDirectory }}
     displayName: "Create Param File"
     condition: succeeded()
     env:
