@@ -134,7 +134,7 @@ resource "azurerm_key_vault" "secrets" {
   }
 
   dynamic "network_acls" {
-    for_each = var.current_agent_pool == var.azdevops_agentpool ? [var.delegated_networks] : []
+    for_each = var.lock_down_network ? [var.delegated_networks] : []
 
     content {
       default_action = "Deny"

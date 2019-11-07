@@ -13,3 +13,9 @@ variable "secrets" {
 variable "delegated_networks" {
   type = list(string)
 }
+
+variable "lock_down_network" {
+  type    = bool
+  description = "Specifiy whether network will be locked down or not"
+  default = true
+}

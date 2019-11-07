@@ -115,6 +115,7 @@ module Secrets {
     password = random_password.password.result
   }
   delegated_networks = [azurerm_subnet.buildagent.id]
+  lock_down_network  = var.current_agent_pool == var.azdevops_agentpool
 }
 
 resource "azurerm_virtual_machine" "buildagent" {
