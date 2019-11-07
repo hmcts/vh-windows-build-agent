@@ -101,11 +101,11 @@ stages:
             - name: Dev
               storageAccount: $(infra_storage_account_dev)
               armServiceConnection: $(infra_arm_service_connection_dev)
-              deploymentBranch: refs/heads/master
+              deploymentBranch: refs/pull
               identities: $(infra_identities_dev)
 
   - stage: Deploy_Prod_Environments
-    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+    condition: eq(variables['Build.SourceBranch'], 'refs/head/master')
     dependsOn:
       - Plan_Prod_Environments
       - Deploy_Test_Environments
@@ -121,5 +121,5 @@ stages:
             - name: Prod
               storageAccount: $(infra_storage_account_pilot)
               armServiceConnection: $(infra_arm_service_connection_pilot)
-              deploymentBranch: refs/heads/master
+              deploymentBranch: refs/head/master
               identities: $(infra_identities_pilot)

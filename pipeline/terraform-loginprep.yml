@@ -47,8 +47,6 @@ steps:
       scriptLocation: inlineScript
       failOnStandardError: false
       inlineScript: |
-        get-location
-        dir
         $tfFolder = Join-Path "${{ parameters.workingDirectory }}" ".terraform"
         if(test-path $tfFolder) {
           Remove-Item $tfFolder -Force -Recurse
