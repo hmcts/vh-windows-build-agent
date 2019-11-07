@@ -75,7 +75,7 @@ resource "azurerm_key_vault" "secrets" {
     ]
   }
 
-  dynamic "network_rules" {
+  dynamic "access_policy" {
     for_each = data.azurerm_client_config.current.object_id != azurerm_user_assigned_identity.kvuser.principal_id ? [data.azurerm_client_config.current.object_id] : []
 
     content {
@@ -133,7 +133,7 @@ resource "azurerm_key_vault" "secrets" {
     }
   }
 
-  dynamic "network_rules" {
+  dynamic "network_acls" {
     for_each = var.current_agent_pool == var.azdevops_agentpool ? [var.delegated_networks] : []
 
     content {
