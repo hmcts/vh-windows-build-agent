@@ -6,6 +6,7 @@ parameters:
   pat_token: ""
   agent_pool: ""
   environment: ""
+  executing_pool: ""
 
 steps:
   - script: |
@@ -26,6 +27,7 @@ steps:
       pat_token: ${{ parameters.pat_token }}
       agent_pool: ${{ parameters.agent_pool }}
       environment: ${{ parameters.environment }}
+      executing_pool: ${{ parameters.executing_pool }}
 
   - task: AzureCLI@2
     inputs:

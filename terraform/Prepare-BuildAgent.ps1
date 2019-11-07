@@ -97,8 +97,6 @@ end {
         $null = $PipeAcl.AddAccessRule($PipeAccessRule)
         [System.IO.Directory]::SetAccessControl('\\.\pipe\docker_engine', $PipeAcl)
 
-        docker image prune
-
         Restart-Computer -Force
     }
 

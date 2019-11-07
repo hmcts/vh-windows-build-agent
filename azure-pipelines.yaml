@@ -55,6 +55,7 @@ stages:
           pat_token: $(pat_token)
           agent_pool: $(agent_pool_dev)
           identities: $(infra_identities_dev)
+          executing_pool: $(vmPool)
 
   - stage: Plan_Prod_Environments
     jobs:
@@ -86,6 +87,7 @@ stages:
           pat_token: $(pat_token)
           agent_pool: $(agent_pool_pilot)
           identities: $(infra_identities_pilot)
+          executing_pool: $(vmPool)
 
   - stage: Deploy_Test_Environments
     dependsOn: Plan_Test_Environments
@@ -101,7 +103,7 @@ stages:
             - name: Dev
               storageAccount: $(infra_storage_account_dev)
               armServiceConnection: $(infra_arm_service_connection_dev)
-              deploymentBranch: refs/heads/master
+              deploymentBranch: refs/pull
               identities: $(infra_identities_dev)
 
   - stage: Deploy_Prod_Environments
