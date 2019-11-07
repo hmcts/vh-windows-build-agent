@@ -1,21 +1,3 @@
-terraform {
-  backend "azurerm" {
-    container_name = "tfstate"
-    key            = "infra/vh-build-agent.tfstate"
-  }
-}
-
-provider "azurerm" {
-  version = ">= 1.36.0"
-}
-
-locals {
-  environment   = lookup(var.workspace_to_environment_map, terraform.workspace, "dev")
-  suffix        = "-${local.environment}"
-  common_prefix = "vsts-agent"
-  std_prefix    = "vh-${local.common_prefix}"
-}
-
 resource "azurerm_resource_group" "buildagent" {
   name     = "${local.std_prefix}${local.suffix}"
   location = var.location
@@ -27,7 +9,7 @@ resource "azurerm_virtual_network" "buildagent" {
   resource_group_name = azurerm_resource_group.buildagent.name
   location            = azurerm_resource_group.buildagent.location
 
-  address_space = ["10.254.0.248/29"]
+  address_space = [var.address_space]
 }
 
 resource "azurerm_subnet" "buildagent" {
@@ -73,7 +55,7 @@ resource "azurerm_network_interface" "buildagent" {
 }
 
 resource "azurerm_storage_account" "buildagent" {
-  name                = replace("${local.std_prefix}${local.suffix}","-","")
+  name                = replace("${local.std_prefix}${local.suffix}", "-", "")
   resource_group_name = azurerm_resource_group.buildagent.name
   location            = azurerm_resource_group.buildagent.location
 
@@ -85,10 +67,14 @@ resource "azurerm_storage_account" "buildagent" {
   enable_https_traffic_only         = true
   enable_advanced_threat_protection = true
 
-  network_rules {
-    default_action             = "Deny"
-    bypass                     = ["None"]
-    virtual_network_subnet_ids = [var.build_agent_vnet, azurerm_subnet.buildagent.id]
+  dynamic "network_rules" {
+    for_each = var.current_agent_pool == var.azdevops_agentpool ? [azurerm_subnet.buildagent.id] : []
+
+    content {
+      default_action             = "Deny"
+      bypass                     = ["None"]
+      virtual_network_subnet_ids = [network_rules.value]
+    }
   }
 }
 
@@ -128,7 +114,8 @@ module Secrets {
     username = random_password.username.result
     password = random_password.password.result
   }
-  delegated_networks = [var.build_agent_vnet, azurerm_subnet.buildagent.id]
+  delegated_networks = [azurerm_subnet.buildagent.id]
+  lock_down_network  = var.current_agent_pool == var.azdevops_agentpool
 }
 
 resource "azurerm_virtual_machine" "buildagent" {
@@ -156,7 +143,7 @@ resource "azurerm_virtual_machine" "buildagent" {
   }
 
   os_profile {
-    computer_name  = replace("${local.std_prefix}${local.suffix}","-","")
+    computer_name  = replace("${local.std_prefix}${local.suffix}", "-", "")
     admin_username = random_password.username.result
     admin_password = random_password.password.result
   }
@@ -176,11 +163,6 @@ resource "azurerm_virtual_machine" "buildagent" {
     type         = "UserAssigned"
     identity_ids = concat(var.identities, [module.Secrets.kv_managed_identity.id])
   }
-}
-
-locals {
-  deployment_command = "powershell.exe -ExecutionPolicy Unrestricted -File ./${azurerm_storage_blob.deployment_script.name} -verbose"
-  deployment_params  = "-DevOpsUrl ${var.azdevops_url} -PAT ${var.azdevops_pat} -AgentPool ${var.azdevops_agentpool} -AgentName ${local.std_prefix}${local.suffix} -InstanceCount ${var.azdevops_agent_count}"
 }
 
 resource "azurerm_virtual_machine_extension" "azuredevopsvmex" {

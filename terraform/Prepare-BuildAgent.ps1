@@ -86,10 +86,9 @@ end {
         Write-Verbose "Found LCOW version $($LCOWMetaObject.tag_name)"
 
         $PackageUrl = $LCOWMetaObject.assets.where{ $_.name -eq "release.zip" }.browser_download_url
-        $ReleaseAsset = Invoke-RestMethod $PackageUrl
 
         $LCOWArchive = Join-Path $env:temp (Split-Path $PackageUrl -Leaf)
-        Invoke-WebRequest $ReleaseAsset -Out $LCOWArchive
+        Invoke-WebRequest $PackageUrl -Out $LCOWArchive
 
         Write-Verbose "Extracting LCOW to $Env:ProgramFiles\Linux Containers\."
         Expand-Archive $LCOWArchive -DestinationPath "$Env:ProgramFiles\Linux Containers\."
@@ -98,8 +97,6 @@ end {
         $PipeAccessRule = New-Object -TypeName System.Security.AccessControl.FileSystemAccessRule("Network Service", 'FullControl', 'Allow')
         $null = $PipeAcl.AddAccessRule($PipeAccessRule)
         [System.IO.Directory]::SetAccessControl('\\.\pipe\docker_engine', $PipeAcl)
-
-        docker image prune
 
         Restart-Computer -Force
     }

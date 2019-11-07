@@ -6,6 +6,7 @@ parameters:
   pat_token: ""
   agent_pool: ""
   environment: ""
+  executing_pool: ""
 
 steps:
   - task: AzureCLI@2
@@ -31,6 +32,7 @@ steps:
         azdevops_url = "$(System.TeamFoundationCollectionUri)"
         azdevops_pat = $env:pat_token
         azdevops_agentpool = $env:agent_pool
+        current_agent_pool = $env:executing_pool
       } | ConvertTo-Json | Set-Content params.auto.tfvars.json -force
     workingDirectory: ${{ parameters.workingDirectory }}
     displayName: "Create Param File"
@@ -39,6 +41,7 @@ steps:
       identities: ${{ parameters.identities }}
       pat_token: ${{ parameters.pat_token }}
       agent_pool: ${{ parameters.agent_pool }}
+      executing_pool: ${{ parameters.executing_pool }}
   
   - task: AzureCLI@2
     inputs:

@@ -1,10 +1,12 @@
 variable "location" {
   type    = string
+  description = "Specifiy location to which all resources will be deployed"
   default = "ukwest"
 }
 
 variable "identities" {
   type    = list(string)
+  description = "Specifiy User Assigned Managed identities which will be assigned to the build machine"
   default = []
 }
 
@@ -31,15 +33,18 @@ variable "azdevops_agent_count" {
 
 variable "timezone" {
   type    = string
+  description = "Specifiy timezone set within the guest of the vm"
   default = "GMT Standard Time"
 }
 
 variable "vm_size" {
   type    = string
+  description = "Specifiy the size of the build machine the vm"
   default = "Standard_D4s_v3"
 }
 
-variable "build_agent_vnet" {
+variable "current_agent_pool" {
   type    = string
-  default = "/subscriptions/705b2731-0e0b-4df7-8630-95f157f0a347/resourceGroups/vh-devtestlabs-dev/providers/Microsoft.Network/virtualNetworks/Dtlvh-devtestlabs-dev/subnets/Dtlvh-devtestlabs-devSubnet"
+  description = "Specifiy the current agent pool in order that the network rules can be disabled or not"
+  default = ""
 }
