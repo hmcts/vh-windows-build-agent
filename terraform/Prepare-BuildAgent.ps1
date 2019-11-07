@@ -29,6 +29,7 @@ begin {
     $env:VSTS_AGENT_HTTPTRACE = $true
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     $ConfirmPreference = "None"
+    $ProgressPreference = "SilentlyContinue"
 
     Start-Transcript
 
@@ -84,10 +85,11 @@ end {
         $LCOWMetaObject = (Invoke-RestMethod https://api.github.com/repos/linuxkit/lcow/releases) | Select-Object -First 1
         Write-Verbose "Found LCOW version $($LCOWMetaObject.tag_name)"
 
-        Write-Verbose "Getting list of assets within the release"
-        $ReleaseAsset = Invoke-RestMethod $LCOWMetaObject.assets.where{ $_.name -eq "release.zip" }.browser_download_url
+        $PackageUrl = $LCOWMetaObject.assets.where{ $_.name -eq "release.zip" }.browser_download_url
+        $ReleaseAsset = Invoke-RestMethod $PackageUrl
 
-        Invoke-WebRequest $ReleaseAsset -Out $AgentArchive
+        $LCOWArchive = Join-Path $env:temp (Split-Path $PackageUrl -Leaf)
+        Invoke-WebRequest $ReleaseAsset -Out $LCOWArchive
 
         Write-Verbose "Extracting LCOW to $Env:ProgramFiles\Linux Containers\."
         Expand-Archive $LCOWArchive -DestinationPath "$Env:ProgramFiles\Linux Containers\."

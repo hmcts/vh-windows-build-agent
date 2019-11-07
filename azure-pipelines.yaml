@@ -101,7 +101,7 @@ stages:
             - name: Dev
               storageAccount: $(infra_storage_account_dev)
               armServiceConnection: $(infra_arm_service_connection_dev)
-              deploymentBranch: refs/pull
+              deploymentBranch: refs/master
               identities: $(infra_identities_dev)
 
   - stage: Deploy_Prod_Environments
