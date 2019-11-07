@@ -73,7 +73,7 @@ resource "azurerm_storage_account" "buildagent" {
     content {
       default_action             = "Deny"
       bypass                     = ["None"]
-      virtual_network_subnet_ids = [each.value]
+      virtual_network_subnet_ids = [network_rules.value]
     }
   }
 }

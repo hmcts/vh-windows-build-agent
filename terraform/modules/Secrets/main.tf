@@ -80,7 +80,7 @@ resource "azurerm_key_vault" "secrets" {
 
     content {
       tenant_id = data.azurerm_client_config.current.tenant_id
-      object_id = each.value
+      object_id = access_policy.value
 
       certificate_permissions = [
         "backup",
@@ -141,7 +141,7 @@ resource "azurerm_key_vault" "secrets" {
       bypass         = ["None"]
       ip_rules = [
       ]
-      virtual_network_subnet_ids = [each.value]
+      virtual_network_subnet_ids = [network_acls.value]
     }
   }
 }
