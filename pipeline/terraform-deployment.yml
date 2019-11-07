@@ -8,7 +8,7 @@ parameters:
 
 jobs:
 - ${{ each deployment in parameters.environments }}:
-  - deployment: Core_Infra_${{ deployment.name }}
+  - deployment: Build_Agent_${{ deployment.name }}
 
     pool:
       name: ${{ parameters.pool }}

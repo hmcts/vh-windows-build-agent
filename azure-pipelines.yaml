@@ -107,7 +107,7 @@ stages:
               identities: $(infra_identities_dev)
 
   - stage: Deploy_Prod_Environments
-    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     dependsOn:
       - Plan_Prod_Environments
       - Deploy_Test_Environments
