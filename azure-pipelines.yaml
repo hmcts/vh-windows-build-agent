@@ -15,14 +15,14 @@ pr:
 
 variables:
   - group: vh-infra-dev
-  - group: vh-infra-pilot
+  - group: vh-infra-prod
   - group: az-devops-auth
   - name: vmPool
     value: Azure-VSTS-VS2017
   - name: agent_pool_dev
     value: vh-vsts-agent-dev
-  - name: agent_pool_pilot
-    value: vh-vsts-agent-pilot
+  - name: agent_pool_prod
+    value: vh-vsts-agent-prod
 
 stages:
   - stage: Plan_Test_Environments
@@ -59,12 +59,12 @@ stages:
 
   - stage: Plan_Prod_Environments
     jobs:
-    - job: Pilot_Plan
+    - job: prod_Plan
       pool:
           name: $(vmPool)
 
       variables:
-        - group: vh-infra-pilot
+        - group: vh-infra-prod
 
       strategy:
         maxParallel: 3
@@ -79,14 +79,14 @@ stages:
       - template: pipeline/terraform-plan.yml
         parameters:
           workingDirectory: $(Build.SourcesDirectory)/terraform
-          storageAccount: $(infra_storage_account_pilot)
+          storageAccount: $(infra_storage_account_prod)
           environment: $(environment)
 
-          armServiceConnection: $(infra_arm_service_connection_pilot)
+          armServiceConnection: $(infra_arm_service_connection_prod)
 
           pat_token: $(pat_token)
-          agent_pool: $(agent_pool_pilot)
-          identities: $(infra_identities_pilot)
+          agent_pool: $(agent_pool_prod)
+          identities: $(infra_identities_prod)
           executing_pool: $(vmPool)
 
   - stage: Deploy_Test_Environments
@@ -117,11 +117,11 @@ stages:
           workingDirectory: $(Build.SourcesDirectory)/terraform
           pool: $(vmPool)
           pat_token: $(pat_token)
-          agent_pool: $(agent_pool_pilot)
+          agent_pool: $(agent_pool_prod)
 
           environments:
             - name: Prod
-              storageAccount: $(infra_storage_account_pilot)
-              armServiceConnection: $(infra_arm_service_connection_pilot)
+              storageAccount: $(infra_storage_account_prod)
+              armServiceConnection: $(infra_arm_service_connection_prod)
               deploymentBranch: refs/heads/master
-              identities: $(infra_identities_pilot)
+              identities: $(infra_identities_prod)
