@@ -41,10 +41,9 @@ resource "azurerm_network_security_group" "buildagent" {
 }
 
 resource "azurerm_network_interface" "buildagent" {
-  name                      = "${local.std_prefix}${local.suffix}"
-  location                  = azurerm_resource_group.buildagent.location
-  resource_group_name       = azurerm_resource_group.buildagent.name
-  network_security_group_id = azurerm_network_security_group.buildagent.id
+  name                = "${local.std_prefix}${local.suffix}"
+  location            = azurerm_resource_group.buildagent.location
+  resource_group_name = azurerm_resource_group.buildagent.name
 
   ip_configuration {
     name                          = "${local.std_prefix}${local.suffix}"
@@ -52,6 +51,11 @@ resource "azurerm_network_interface" "buildagent" {
     private_ip_address_allocation = "dynamic"
     public_ip_address_id          = azurerm_public_ip.buildagent.id
   }
+}
+
+resource "azurerm_network_interface_security_group_association" "buildagent" {
+  network_interface_id      = azurerm_network_interface.buildagent.id
+  network_security_group_id = azurerm_network_security_group.buildagent.id
 }
 
 resource "azurerm_storage_account" "buildagent" {
@@ -63,7 +67,6 @@ resource "azurerm_storage_account" "buildagent" {
   account_replication_type  = "LRS"
   account_kind              = "StorageV2"
   access_tier               = "Cool"
-  enable_file_encryption    = true
   enable_https_traffic_only = true
 
   dynamic "network_rules" {
@@ -77,7 +80,7 @@ resource "azurerm_storage_account" "buildagent" {
   }
 }
 
-resource azurerm_advanced_threat_protection "buildagent" {
+resource "azurerm_advanced_threat_protection" "buildagent" {
   target_resource_id = azurerm_storage_account.buildagent.id
   enabled            = true
 }
@@ -109,7 +112,7 @@ resource "random_password" "password" {
   special = true
 }
 
-module Secrets {
+module "Secrets" {
   source = "./modules/Secrets"
 
   resource_group_name = azurerm_resource_group.buildagent.name
