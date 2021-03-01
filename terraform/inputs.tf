@@ -1,13 +1,13 @@
 variable "location" {
-  type    = string
+  type        = string
   description = "Specifiy location to which all resources will be deployed"
-  default = "ukwest"
+  default     = "ukwest"
 }
 
 variable "identities" {
-  type    = list(string)
+  type        = list(string)
   description = "Specifiy User Assigned Managed identities which will be assigned to the build machine"
-  default = []
+  default     = []
 }
 
 variable "azdevops_url" {
@@ -32,19 +32,19 @@ variable "azdevops_agent_count" {
 }
 
 variable "timezone" {
-  type    = string
+  type        = string
   description = "Specifiy timezone set within the guest of the vm"
-  default = "GMT Standard Time"
+  default     = "GMT Standard Time"
 }
 
 variable "vm_size" {
-  type    = string
+  type        = string
   description = "Specifiy the size of the build machine the vm"
-  default = "Standard_D4s_v3"
+  default     = "Standard_D4s_v3"
 }
 
 variable "current_agent_pool" {
-  type    = string
+  type        = string
   description = "Specifiy the current agent pool in order that the network rules can be disabled or not"
-  default = ""
+  default     = ""
 }
