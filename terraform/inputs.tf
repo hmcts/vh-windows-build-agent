@@ -4,12 +4,6 @@ variable "location" {
   default     = "ukwest"
 }
 
-variable "identities" {
-  type        = list(string)
-  description = "Specifiy User Assigned Managed identities which will be assigned to the build machine"
-  default     = []
-}
-
 variable "azdevops_url" {
   type        = string
   description = "Specify the Azure DevOps url e.g. https://dev.azure.com/rdbartram"

@@ -13,7 +13,6 @@ jobs:
     pool:
       name: ${{ parameters.pool }}
 
-    condition: startsWith(variables['Build.SourceBranch'], '${{ deployment.deploymentBranch }}')
     environment: ${{ deployment.name }}
     strategy:
       runOnce:
@@ -28,6 +27,5 @@ jobs:
               storageAccount: ${{ deployment.storageAccount }}
               environment: ${{ deployment.name }}
               armServiceConnection: ${{ deployment.armServiceConnection }}
-              identities: ${{ deployment.identities }}
               pat_token: ${{ parameters.pat_token }}
               agent_pool: ${{ parameters.agent_pool }}

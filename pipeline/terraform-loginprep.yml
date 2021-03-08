@@ -2,7 +2,6 @@ parameters:
   workingDirectory: $(system.defaultWorkingDirectory)
   storageAccount: ""
   armServiceConnection: ""
-  identities: ""
   pat_token: ""
   agent_pool: ""
   environment: ""
@@ -28,7 +27,6 @@ steps:
 
   - pwsh: |
       @{
-        identities = $env:identities -split ","
         azdevops_url = "$(System.TeamFoundationCollectionUri)"
         azdevops_pat = $env:pat_token
         azdevops_agentpool = $env:agent_pool
@@ -38,7 +36,6 @@ steps:
     displayName: "Create Param File"
     condition: succeeded()
     env:
-      identities: ${{ parameters.identities }}
       pat_token: ${{ parameters.pat_token }}
       agent_pool: ${{ parameters.agent_pool }}
       executing_pool: ${{ parameters.executing_pool }}

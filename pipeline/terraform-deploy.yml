@@ -2,7 +2,6 @@ parameters:
   workingDirectory: $(system.defaultWorkingDirectory)
   storageAccount: ""
   armServiceConnection: ""
-  identities: ""
   pat_token: ""
   agent_pool: ""
   environment: ""
@@ -13,7 +12,6 @@ steps:
       workingDirectory: ${{ parameters.workingDirectory }}
       storageAccount: ${{ parameters.storageAccount }}
       armServiceConnection: ${{ parameters.armServiceConnection }}
-      identities: ${{ parameters.identities }}
       pat_token: ${{ parameters.pat_token }}
       agent_pool: ${{ parameters.agent_pool }}
       environment: ${{ parameters.environment }}

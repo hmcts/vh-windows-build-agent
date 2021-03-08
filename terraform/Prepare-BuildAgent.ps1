@@ -51,8 +51,8 @@ begin {
     Write-Verbose "Downloading the agent package for $platform"
 
     $Package = $ReleaseAssets.where{ $_.platform -eq $platform }
-    $AgentArchive = Join-Path $env:temp (Split-Path $Package.downloadUrl -Leaf)
-    Invoke-WebRequest $Package.downloadUrl -Out $AgentArchive
+    $AgentArchive = Join-Path $env:temp (Split-Path $Package.downloadUrl[0] -Leaf)
+    Invoke-WebRequest $Package.downloadUrl[0] -Out $AgentArchive
 }
 
 process {

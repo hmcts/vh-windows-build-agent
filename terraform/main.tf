@@ -168,7 +168,7 @@ resource "azurerm_virtual_machine" "buildagent" {
 
   identity {
     type         = "UserAssigned"
-    identity_ids = concat(var.identities, [module.Secrets.kv_managed_identity.id])
+    identity_ids = [module.Secrets.kv_managed_identity.id]
   }
 }
 
