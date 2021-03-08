@@ -112,19 +112,18 @@ resource "random_password" "password" {
   special = true
 }
 
-module "Secrets" {
-  source = "./modules/Secrets"
-  depends_on = [ azurerm_resource_group.buildagent ]
+# module "Secrets" {
+#   source = "./modules/Secrets"
 
-  resource_group_name = azurerm_resource_group.buildagent.name
-  resource_prefix     = "${local.std_prefix}${local.suffix}"
-  secrets = {
-    username = random_password.username.result
-    password = random_password.password.result
-  }
-  delegated_networks = [azurerm_subnet.buildagent.id]
-  lock_down_network  = var.current_agent_pool == var.azdevops_agentpool
-}
+#   resource_group_name = azurerm_resource_group.buildagent.name
+#   resource_prefix     = "${local.std_prefix}${local.suffix}"
+#   secrets = {
+#     username = random_password.username.result
+#     password = random_password.password.result
+#   }
+#   delegated_networks = [azurerm_subnet.buildagent.id]
+#   lock_down_network  = var.current_agent_pool == var.azdevops_agentpool
+# }
 
 resource "azurerm_virtual_machine" "buildagent" {
   name                = "${local.std_prefix}${local.suffix}"
@@ -167,10 +166,10 @@ resource "azurerm_virtual_machine" "buildagent" {
     storage_uri = azurerm_storage_account.buildagent.primary_blob_endpoint
   }
 
-  identity {
-    type         = "UserAssigned"
-    identity_ids = [module.Secrets.kv_managed_identity.id]
-  }
+  # identity {
+  #   type         = "UserAssigned"
+  #   identity_ids = [module.Secrets.kv_managed_identity.id]
+  # }
 }
 
 resource "azurerm_virtual_machine_extension" "azuredevopsvmex" {
