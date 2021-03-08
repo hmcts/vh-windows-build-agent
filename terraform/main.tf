@@ -114,6 +114,7 @@ resource "random_password" "password" {
 
 module "Secrets" {
   source = "./modules/Secrets"
+  depends_on = [ azurerm_resource_group.buildagent ]
 
   resource_group_name = azurerm_resource_group.buildagent.name
   resource_prefix     = "${local.std_prefix}${local.suffix}"
