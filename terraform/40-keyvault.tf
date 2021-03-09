@@ -1,5 +1,5 @@
 resource "azurerm_key_vault" "secrets" {
-  name                        = replace(var.resource_prefix, "-", "")
+  name                        = replace(local.resource_prefix, "-", "")
   location                    = azurerm_resource_group.buildagent.location
   resource_group_name         = azurerm_resource_group.buildagent.name
   enabled_for_disk_encryption = false

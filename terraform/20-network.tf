@@ -1,5 +1,5 @@
 resource "azurerm_virtual_network" "buildagent" {
-  name                = var.resource_prefix
+  name                = local.resource_prefix
   resource_group_name = azurerm_resource_group.buildagent.name
   location            = azurerm_resource_group.buildagent.location
 
@@ -7,7 +7,7 @@ resource "azurerm_virtual_network" "buildagent" {
 }
 
 resource "azurerm_subnet" "buildagent" {
-  name                 = var.resource_prefix
+  name                 = local.resource_prefix
   resource_group_name  = azurerm_resource_group.buildagent.name
   virtual_network_name = azurerm_virtual_network.buildagent.name
 
@@ -22,25 +22,25 @@ resource "azurerm_subnet" "buildagent" {
 }
 
 resource "azurerm_public_ip" "buildagent" {
-  name                = var.resource_prefix
+  name                = local.resource_prefix
   location            = azurerm_resource_group.buildagent.location
   resource_group_name = azurerm_resource_group.buildagent.name
   allocation_method   = "Dynamic"
 }
 
 resource "azurerm_network_security_group" "buildagent" {
-  name                = var.resource_prefix
+  name                = local.resource_prefix
   location            = azurerm_resource_group.buildagent.location
   resource_group_name = azurerm_resource_group.buildagent.name
 }
 
 resource "azurerm_network_interface" "buildagent" {
-  name                = var.resource_prefix
+  name                = local.resource_prefix
   location            = azurerm_resource_group.buildagent.location
   resource_group_name = azurerm_resource_group.buildagent.name
 
   ip_configuration {
-    name                          = var.resource_prefix
+    name                          = local.resource_prefix
     subnet_id                     = azurerm_subnet.buildagent.id
     private_ip_address_allocation = "dynamic"
     public_ip_address_id          = azurerm_public_ip.buildagent.id

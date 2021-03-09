@@ -1,5 +1,5 @@
 resource "azurerm_virtual_machine" "buildagent" {
-  name                = var.resource_prefix
+  name                = local.resource_prefix
   location            = azurerm_resource_group.buildagent.location
   resource_group_name = azurerm_resource_group.buildagent.name
 
@@ -9,7 +9,7 @@ resource "azurerm_virtual_machine" "buildagent" {
   delete_data_disks_on_termination = true
 
   storage_os_disk {
-    name              = var.resource_prefix
+    name              = local.resource_prefix
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Premium_LRS"
@@ -23,7 +23,7 @@ resource "azurerm_virtual_machine" "buildagent" {
   }
 
   os_profile {
-    computer_name  = replace(var.resource_prefix, "-", "")
+    computer_name  = replace(local.resource_prefix, "-", "")
     admin_username = random_password.username.result
     admin_password = random_password.password.result
   }

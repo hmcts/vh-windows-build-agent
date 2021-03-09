@@ -1,5 +1,5 @@
 resource "azurerm_storage_account" "buildagent" {
-  name                = replace(var.resource_prefix, "-", "")
+  name                = replace(local.resource_prefix, "-", "")
   resource_group_name = azurerm_resource_group.buildagent.name
   location            = azurerm_resource_group.buildagent.location
 
