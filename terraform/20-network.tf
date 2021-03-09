@@ -11,7 +11,7 @@ resource "azurerm_subnet" "buildagent" {
   resource_group_name  = azurerm_resource_group.buildagent.name
   virtual_network_name = azurerm_virtual_network.buildagent.name
 
-  address_prefix = cidrsubnet(azurerm_virtual_network.buildagent.address_space[0], 0, 0)
+  address_prefixes = cidrsubnet(azurerm_virtual_network.buildagent.address_space[0], 0, 0)
 
   service_endpoints = [
     "Microsoft.Web",

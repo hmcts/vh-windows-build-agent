@@ -14,4 +14,9 @@ resource "azurerm_virtual_machine_extension" "azuredevopsvmex" {
   "timestamp" : "12"
   }
 PROTECTED_SETTINGS
+
+  depends_on = [
+    azurerm_virtual_machine.buildagent,
+  ]
+
 }

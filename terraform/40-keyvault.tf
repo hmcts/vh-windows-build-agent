@@ -1,9 +1,9 @@
 locals {
   delegated_networks = [azurerm_subnet.buildagent.id]
   lock_down_network  = var.current_agent_pool == var.azdevops_agentpool
- }
- 
- resource "azurerm_key_vault" "secrets" {
+}
+
+resource "azurerm_key_vault" "secrets" {
   name                        = replace(local.resource_prefix, "-", "")
   location                    = azurerm_resource_group.buildagent.location
   resource_group_name         = azurerm_resource_group.buildagent.name
