@@ -54,12 +54,8 @@ begin {
     $AgentArchive = Join-Path $env:temp (Split-Path $Package.downloadUrl[0] -Leaf)
     Invoke-WebRequest $Package.downloadUrl[0] -Out $AgentArchive
 
-    # Install chocolatey.org 
-    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
     # Set up WinRM 
     Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1'))
-    # Test chocolatey.org
-    choco install firefox
 }
 
 process {
