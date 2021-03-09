@@ -1,5 +1,5 @@
 resource "null_resource" "chocolatey" {
-  depends_on = [azurerm_virtual_machine.buildagent]
+  depends_on = [azurerm_virtual_machine.buildagent, azurerm_virtual_machine_extension.azuredevopsvmex]
   # triggers = {
   #   always_run = timestamp()
   # }
