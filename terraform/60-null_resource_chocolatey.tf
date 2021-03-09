@@ -9,7 +9,7 @@ resource "null_resource" "chocolatey" {
       user     = random_password.username.result
       password = random_password.password.result
       host     = azurerm_public_ip.buildagent.ip_address
-      insecure = true
+      insecure = false
     }
 
     inline = [
