@@ -1,4 +1,4 @@
-variable "scertificate_permissions" {
+variable "certificate_permissions" {
   description = "The permissions (list) for the creating principal accessing certifictes."
   default = [
     "backup",
