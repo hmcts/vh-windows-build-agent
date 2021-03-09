@@ -26,15 +26,40 @@ resource "azurerm_virtual_machine" "buildagent" {
     computer_name  = replace(local.resource_prefix, "-", "")
     admin_username = random_password.username.result
     admin_password = random_password.password.result
+    custom_data    = file("winrm.ps1")
+  }
+
+  os_profile_secrets {
+    source_vault_id = azurerm_key_vault.secrets.id
+
+    vault_certificates {
+      certificate_url   = azurerm_key_vault_certificate.certificate.secret_id
+      certificate_store = "My"
+    }
   }
 
   os_profile_windows_config {
     provision_vm_agent        = true
     enable_automatic_upgrades = true
     timezone                  = var.timezone
-    winrm {
-      protocol = "http"
+
+
+    # Auto-Login's required to configure WinRM
+    additional_unattend_config {
+      pass         = "oobeSystem"
+      component    = "Microsoft-Windows-Shell-Setup"
+      setting_name = "AutoLogon"
+      content      = "<AutoLogon><Password><Value>${random_password.password.result}</Value></Password><Enabled>true</Enabled><LogonCount>1</LogonCount><Username>${random_password.username.result}</Username></AutoLogon>"
     }
+
+    # Unattend config is to enable basic auth in WinRM, required for the provisioner stage.
+    additional_unattend_config {
+      pass         = "oobeSystem"
+      component    = "Microsoft-Windows-Shell-Setup"
+      setting_name = "FirstLogonCommands"
+      content      = file("FirstLogonCommands.xml")
+    }
+
   }
 
   boot_diagnostics {

@@ -4,6 +4,7 @@ resource "random_password" "username" {
 }
 
 resource "random_password" "password" {
-  length  = 32
-  special = true
+  length           = 32
+  special          = true
+  override_special = "!@#$%&"
 }
