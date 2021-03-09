@@ -27,7 +27,7 @@ stages:
     jobs:
     - job: Dev_Plan
       pool:
-        vmImage: windows-latest
+        vmImage: ubuntu-latest
 
       variables:
         - group: vh-infra-dev
@@ -56,7 +56,7 @@ stages:
     jobs:
     - job: prod_Plan
       pool:
-        vmImage: windows-latest
+        vmImage: ubuntu-latest
 
       variables:
         - group: vh-infra-prod

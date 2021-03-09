@@ -10,7 +10,7 @@ jobs:
   - deployment: Build_Agent_${{ deployment.name }}
 
     pool:
-      vmImage: windows-latest
+      vmImage: ubuntu-latest
 
     environment: ${{ deployment.name }}
     strategy:
