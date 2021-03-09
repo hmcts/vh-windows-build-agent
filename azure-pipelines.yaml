@@ -17,8 +17,6 @@ variables:
   - group: vh-infra-dev
   - group: vh-infra-prod
   - group: az-devops-auth
-  - name: vmPool
-    value: Azure-VSTS-VS2017
   - name: agent_pool_dev
     value: vh-vsts-agent-dev
   - name: agent_pool_prod
@@ -29,7 +27,7 @@ stages:
     jobs:
     - job: Dev_Plan
       pool:
-          name: $(vmPool)
+        vmImage: windows-latest
 
       variables:
         - group: vh-infra-dev
@@ -49,18 +47,16 @@ stages:
           workingDirectory: $(Build.SourcesDirectory)/terraform
           storageAccount: $(infra_storage_account_dev)
           environment: $(environment)
-
           armServiceConnection: $(infra_arm_service_connection_dev)
-
           pat_token: $(pat_token)
           agent_pool: $(agent_pool_dev)
-          executing_pool: $(vmPool)
+
 
   - stage: Plan_Prod_Environments
     jobs:
     - job: prod_Plan
       pool:
-          name: $(vmPool)
+        vmImage: windows-latest
 
       variables:
         - group: vh-infra-prod
@@ -80,12 +76,10 @@ stages:
           workingDirectory: $(Build.SourcesDirectory)/terraform
           storageAccount: $(infra_storage_account_prod)
           environment: $(environment)
-
           armServiceConnection: $(infra_arm_service_connection_prod)
-
           pat_token: $(pat_token)
           agent_pool: $(agent_pool_prod)
-          executing_pool: $(vmPool)
+
 
   - stage: Deploy_Test_Environments
     dependsOn: Plan_Test_Environments
@@ -93,7 +87,6 @@ stages:
       - template: pipeline/terraform-deployment.yml
         parameters:
           workingDirectory: $(Build.SourcesDirectory)/terraform
-          pool: $(vmPool)
           pat_token: $(pat_token)
           agent_pool: $(agent_pool_dev)
 
@@ -112,7 +105,6 @@ stages:
       - template: pipeline/terraform-deployment.yml
         parameters:
           workingDirectory: $(Build.SourcesDirectory)/terraform
-          pool: $(vmPool)
           pat_token: $(pat_token)
           agent_pool: $(agent_pool_prod)
 

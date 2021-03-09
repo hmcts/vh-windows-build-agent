@@ -9,15 +9,6 @@ resource "azurerm_storage_account" "buildagent" {
   access_tier               = "Cool"
   enable_https_traffic_only = true
 
-  dynamic "network_rules" {
-    for_each = var.current_agent_pool == var.azdevops_agentpool ? [azurerm_subnet.buildagent.id] : []
-
-    content {
-      default_action             = "Deny"
-      bypass                     = ["None"]
-      virtual_network_subnet_ids = [network_rules.value]
-    }
-  }
 }
 
 resource "azurerm_advanced_threat_protection" "buildagent" {

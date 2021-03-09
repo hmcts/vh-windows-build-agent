@@ -1,6 +1,5 @@
 parameters:
   workingDirectory: $(system.defaultWorkingDirectory)
-  pool:
   environments: []
   jobs: []
   pat_token: ""
@@ -11,7 +10,7 @@ jobs:
   - deployment: Build_Agent_${{ deployment.name }}
 
     pool:
-      name: ${{ parameters.pool }}
+      vmImage: windows-latest
 
     environment: ${{ deployment.name }}
     strategy:

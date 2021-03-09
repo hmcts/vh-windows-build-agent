@@ -24,9 +24,3 @@ variable "azdevops_agent_count" {
   description = "Specifiy number of agent instances to deploy on the vm"
   default     = 4
 }
-
-variable "current_agent_pool" {
-  type        = string
-  description = "Specifiy the current agent pool in order that the network rules can be disabled or not"
-  default     = ""
-}

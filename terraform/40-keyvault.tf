@@ -1,8 +1,3 @@
-locals {
-  delegated_networks = [azurerm_subnet.buildagent.id]
-  lock_down_network  = var.current_agent_pool == var.azdevops_agentpool
-}
-
 resource "azurerm_key_vault" "secrets" {
   name                        = replace(local.resource_prefix, "-", "")
   location                    = azurerm_resource_group.buildagent.location
@@ -34,17 +29,6 @@ resource "azurerm_key_vault" "secrets" {
       key_permissions         = var.key_permissions
       secret_permissions      = var.secret_permissions
 
-    }
-  }
-
-  dynamic "network_acls" {
-    for_each = local.lock_down_network ? [local.delegated_networks] : []
-
-    content {
-      default_action             = "Deny"
-      bypass                     = ["None"]
-      ip_rules                   = []
-      virtual_network_subnet_ids = [network_acls.value]
     }
   }
 }
