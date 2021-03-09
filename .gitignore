@@ -330,6 +330,7 @@ ASALocalRun/
 .mfractor/
 
 .terraform
+*.hcl
 backend-*.tfvars
 *.auto.tfvars.json
 *.toimport
