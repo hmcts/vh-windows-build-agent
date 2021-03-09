@@ -32,6 +32,9 @@ resource "azurerm_virtual_machine" "buildagent" {
     provision_vm_agent        = true
     enable_automatic_upgrades = true
     timezone                  = var.timezone
+    winrm {
+      protocol = "http"
+    }
   }
 
   boot_diagnostics {
