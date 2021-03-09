@@ -3,6 +3,7 @@ resource "azurerm_key_vault" "secrets" {
   location                    = azurerm_resource_group.buildagent.location
   resource_group_name         = azurerm_resource_group.buildagent.name
   enabled_for_disk_encryption = false
+  enabled_for_deployment      = true
   tenant_id                   = data.azurerm_client_config.current.tenant_id
 
   sku_name = "standard"
