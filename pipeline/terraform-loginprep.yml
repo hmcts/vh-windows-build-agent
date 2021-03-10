@@ -61,6 +61,7 @@ steps:
         } else {
           terraform workspace select ${{ parameters.environment }}
         }
+        terraform plan -out="plan.tfplan" -input=false
       workingDirectory: ${{ parameters.workingDirectory }}
     displayName: Terraform Backend Initialisation
     condition: succeeded()
