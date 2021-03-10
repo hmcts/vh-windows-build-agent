@@ -61,7 +61,7 @@ steps:
         } else {
           terraform workspace select ${{ parameters.environment }}
         }
-        terraform plan -out="plan.tfplan" -input=false
+        terraform state replace-provider -auto-approve registry.terraform.io/-/vault registry.terraform.io/hashicorp/vault
       workingDirectory: ${{ parameters.workingDirectory }}
     displayName: Terraform Backend Initialisation
     condition: succeeded()
