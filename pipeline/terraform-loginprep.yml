@@ -53,7 +53,6 @@ steps:
         if(test-path $tfPlan) {
           Remove-Item $tfPlan -Force
         }
-        terraform state replace-provider -auto-approve registry.terraform.io/-/vault registry.terraform.io/hashicorp/vault
         terraform init -backend-config="storage_account_name=${{ parameters.storageAccount }}" -reconfigure
         
         if($null -eq (terraform workspace list | Select-String '${{ parameters.environment }}$')) {
