@@ -20,7 +20,6 @@ steps:
       workingDirectory: ${{ parameters.workingDirectory }}
       storageAccount: ${{ parameters.storageAccount }}
       armServiceConnection: ${{ parameters.armServiceConnection }}
-      dnsServiceConnection: ${{ parameters.dnsServiceConnection }}
       pat_token: ${{ parameters.pat_token }}
       agent_pool: ${{ parameters.agent_pool }}
       environment: ${{ parameters.environment }}
