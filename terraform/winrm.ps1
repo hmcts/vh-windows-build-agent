@@ -16,6 +16,10 @@ winrm create winrm/config/Listener?Address=*+Transport=HTTP "@{Hostname=`"$Compu
 Write-Host "Enabling Basic Authentication.."
 winrm set winrm/config/service/Auth "@{Basic=`"true`"}"
 
+Set-Item -Force WSMan:\localhost\Service\AllowUnencrypted $true
+Set-Item -Force WSMan:\localhost\Client\AllowUnencrypted $true
+Set-Item -Force WSMan:\localhost\Service\AllowRemoteAccess $true 
+
 Write-Host "Re-starting the WinRM Service"
 net stop winrm
 net start winrm
