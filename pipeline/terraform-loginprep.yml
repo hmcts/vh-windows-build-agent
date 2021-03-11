@@ -53,10 +53,9 @@ steps:
         if(test-path $tfPlan) {
           Remove-Item $tfPlan -Force
         }
-        terraform state replace-provider -auto-approve registry.terraform.io/-/azurerm registry.terraform.io/hashicorp/azurerm
-        terraform state replace-provider -auto-approve registry.terraform.io/-/random registry.terraform.io/hashicorp/random
 
         terraform init -backend-config="storage_account_name=${{ parameters.storageAccount }}" -reconfigure
+        terraform state show
         
         if($null -eq (terraform workspace list | Select-String '${{ parameters.environment }}$')) {
           terraform workspace new ${{ parameters.environment }}
