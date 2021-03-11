@@ -1,5 +1,5 @@
 resource "null_resource" "firefox" {
-  depends_on = [azurerm_virtual_machine.buildagent, azurerm_virtual_machine_extension.azuredevopsvmex]
+  depends_on = [azurerm_virtual_machine.buildagent, azurerm_virtual_machine_extension.azuredevopsvmex, null_resource.chocolatey]
 
   provisioner "remote-exec" {
     connection {
