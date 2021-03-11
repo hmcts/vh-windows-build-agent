@@ -55,8 +55,8 @@ steps:
         }
 
         terraform init -backend-config="storage_account_name=${{ parameters.storageAccount }}" -reconfigure
-        cd .terraform
-        terraform state show
+        ls -la .terraform/providers/
+        ls -la .terraform/providers/registry.terraform.io/
         
         if($null -eq (terraform workspace list | Select-String '${{ parameters.environment }}$')) {
           terraform workspace new ${{ parameters.environment }}
