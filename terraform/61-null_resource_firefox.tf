@@ -11,7 +11,7 @@ resource "null_resource" "firefox" {
     }
 
     inline = [
-      "powershell choco install firefox"
+      "powershell choco install firefox -y"
     ]
 
   }
