@@ -62,8 +62,8 @@ steps:
           terraform workspace select ${{ parameters.environment }}
         }
         
-        terraform state replace-provider -auto-approve registry.terraform.io/-/azurerm registry.terraform.io/hashicorp/azurerm
-        
+        terraform state replace-provider -auto-approve registry.terraform.io/-/random registry.terraform.io/hashicorp/random
+
       workingDirectory: ${{ parameters.workingDirectory }}
     displayName: Terraform Backend Initialisation
     condition: succeeded()
