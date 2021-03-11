@@ -1,8 +1,6 @@
-resource "null_resource" "chocolatey" {
+resource "null_resource" "firefox" {
   depends_on = [azurerm_virtual_machine.buildagent, azurerm_virtual_machine_extension.azuredevopsvmex]
-  triggers = {
-    always_run = timestamp()
-  }
+
   provisioner "remote-exec" {
     connection {
       type     = "winrm"
@@ -13,7 +11,7 @@ resource "null_resource" "chocolatey" {
     }
 
     inline = [
-      "powershell Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
+      "powershell choco install firefox"
     ]
 
   }
