@@ -1,0 +1,35 @@
+parameters:
+  workingDirectory: $(system.defaultWorkingDirectory)
+  storageAccount: ""
+  armServiceConnection: ""
+  pat_token: ""
+  agent_pool: ""
+  environment: ""
+
+steps:
+  - template: terraform-loginprep.yml
+    parameters:
+      workingDirectory: ${{ parameters.workingDirectory }}
+      storageAccount: ${{ parameters.storageAccount }}
+      armServiceConnection: ${{ parameters.armServiceConnection }}
+      pat_token: ${{ parameters.pat_token }}
+      agent_pool: ${{ parameters.agent_pool }}
+      environment: ${{ parameters.environment }}
+
+  - task: DownloadPipelineArtifact@2
+    displayName: Download Terraform Plan
+    inputs:
+      artifactName: tfplan-${{ parameters.environment }}
+      targetPath: ${{ parameters.workingDirectory }}
+
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: ${{ parameters.armServiceConnection }}
+      scriptType: pscore
+      scriptLocation: inlineScript
+      failOnStandardError: true
+      workingDirectory: ${{ parameters.workingDirectory }}
+      inlineScript: |
+        terraform apply -auto-approve plan.tfplan
+    displayName: Terraform apply
+    condition: succeeded()

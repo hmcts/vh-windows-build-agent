@@ -1,0 +1,43 @@
+parameters:
+  workingDirectory: $(system.defaultWorkingDirectory)
+  storageAccount: ""
+  armServiceConnection: ""
+  pat_token: ""
+  agent_pool: ""
+  environment: ""
+
+steps:
+  - script: |
+      terraform --version
+      terraform init -backend=false -reconfigure
+      terraform validate
+    workingDirectory: ${{ parameters.workingDirectory }}
+    displayName: "Terraform validate"
+    condition: succeeded()
+
+  - template: terraform-loginprep.yml
+    parameters:
+      workingDirectory: ${{ parameters.workingDirectory }}
+      storageAccount: ${{ parameters.storageAccount }}
+      armServiceConnection: ${{ parameters.armServiceConnection }}
+      pat_token: ${{ parameters.pat_token }}
+      agent_pool: ${{ parameters.agent_pool }}
+      environment: ${{ parameters.environment }}
+
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: ${{ parameters.armServiceConnection }}
+      scriptType: pscore
+      scriptLocation: inlineScript
+      failOnStandardError: false
+      inlineScript: |
+        terraform plan -out="plan.tfplan" -input=false
+      workingDirectory: ${{ parameters.workingDirectory }}
+    displayName: Terraform plan
+    condition: succeeded()
+  
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Terraform Plan'
+    inputs:
+      targetPath: '${{ parameters.workingDirectory }}/plan.tfplan'
+      artifact: tfplan-${{ parameters.environment }}
