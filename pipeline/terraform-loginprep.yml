@@ -55,14 +55,14 @@ steps:
         }
 
         terraform init -backend-config="storage_account_name=${{ parameters.storageAccount }}" -reconfigure
-        ls -la .terraform/providers/
-        ls -la .terraform/providers/registry.terraform.io/
-        
+
         if($null -eq (terraform workspace list | Select-String '${{ parameters.environment }}$')) {
           terraform workspace new ${{ parameters.environment }}
         } else {
           terraform workspace select ${{ parameters.environment }}
         }
+        
+        terraform state replace-provider -auto-approve registry.terraform.io/-/azurerm registry.terraform.io/hashicorp/azurerm
         
       workingDirectory: ${{ parameters.workingDirectory }}
     displayName: Terraform Backend Initialisation
